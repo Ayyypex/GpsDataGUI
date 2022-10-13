@@ -1,3 +1,11 @@
+\\---------------- Commit #2 on 13/10/2022 ------------------------------------------------//
+I added the sodium.jar file and discovered that by putting it into the parent directory, 
+my IDE stops showing errors related to the jar. I wish I knew about this in previous 
+assignments since my test files would show errors because it could not detect classes and
+functions from the JUnit jar.
+
+
+
 \\---------------- Commit #1 on 13/10/2022 ------------------------------------------------//
 Just setting up the directory and given files. I'll mainly use this file to give a more
 detailed explanation of what I have done in each commit.

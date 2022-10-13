@@ -1,3 +1,6 @@
 commands.txt
+src/Example.java
+src/Example.class
 src/GpsEvent.class
 src/GpsService.class
+src/GpsService$GpsInput.class

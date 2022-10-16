@@ -1,3 +1,15 @@
+\\---------------- Commit #4 on 16/10/2022 ------------------------------------------------//
+Updated myGUI class to extend JFrame and moved some configuration options over to main().
+Added the arrays I believe I'll need for the construction of the first component.
+
+
+
+\\---------------- Commit #3 on 16/10/2022 ------------------------------------------------//
+I created the myGUI file which will create my GUI design using a few subclasses. Also set
+some configuration for the JFrame, and wrote some skeleton code.
+
+
+
 \\---------------- Commit #2 on 13/10/2022 ------------------------------------------------//
 I added the sodium.jar file and discovered that by putting it into the parent directory, 
 my IDE stops showing errors related to the jar. I wish I knew about this in previous 

@@ -1,3 +1,9 @@
+\\---------------- Commit #6 on 17/10/2022 ------------------------------------------------//
+Added a JTabbedPane to switch between each of the required GUI displays. Updated the first
+display to be more visually appealing.
+
+
+
 \\---------------- Commit #5 on 17/10/2022 ------------------------------------------------//
 Created SimpleGpsEvent to represent a GpsEvent stripped of its altitude. I mapped the 
 GpsEvent stream to the new SimpleGpsEvent class to strip the altitude. To extract the 

@@ -20,23 +20,24 @@ public class myGUI extends JFrame {
 
   /** Constructs my GUI. */
   public myGUI() {
-    // configuration
+    // mandatory configuration
     this.setTitle("a1765159's GUI");
-    //this.setResizable(false);
     Border blackline = BorderFactory.createLineBorder(Color.black, 5);
     this.getRootPane().setBorder(blackline);
     this.setBackground(Color.gray);
-    this.setSize(1800, 900);
+    this.setSize(1200, 700);
     
     // get the tracker's event streams
     GpsService serv = new GpsService();
     streams = serv.getEventStreams();
     
     // add components to gui
-    this.add( new simplifiedTrackersComponent() );
-    //this.add( new allEventsComponent() );
-    //this.add( new eventsWithinRangeComponent() );
-    //this.add( new distanceTravelledComponent() );
+    JTabbedPane tabbedPane = new JTabbedPane();
+    this.add(tabbedPane);
+    tabbedPane.addTab( "Simplified Trackers", new simplifiedTrackersComponent() );
+    tabbedPane.addTab( "All Events", new allEventsComponent() );
+    tabbedPane.addTab( "Events within Range", new eventsWithinRangeComponent() );
+    tabbedPane.addTab( "Distance travelled within Range", new distanceTravelledComponent() );
   }
 
   /** Displays ten simplified tracker displays, stripping the altitude from a GpsEvent. */
@@ -45,32 +46,52 @@ public class myGUI extends JFrame {
     /** Constructor. */
     public simplifiedTrackersComponent() {
       // configure main panel
-      this.setLayout(new GridLayout(5, 2, 15, 15));
-      this.setSize(new Dimension(1720, 865));
+      this.setLayout(new GridLayout(5, 2, 10, 10));
 
-      // add each tracker display
+      // create and add each tracker display
       for ( Stream<GpsEvent> s : streams ) {
         // create and configure display panel
-        JPanel trackerDisplay = new JPanel(new GridLayout(2, 3, 50, 10));
+        JPanel trackerDisplay = new JPanel(new GridLayout(2, 3, 0, 5));
         trackerDisplay.setBackground(Color.white);
+        trackerDisplay.setBorder(BorderFactory.createEtchedBorder());
 
         // create stream of simplified Gps Events
         Stream<SimpleGpsEvent> simplifiedGpsStream = s.map( (GpsEvent ev) -> new SimpleGpsEvent(ev) );
 
         // set up cells to hold each field
-        Cell<String> trackerNumber = simplifiedGpsStream.map((SimpleGpsEvent ev) -> String.valueOf(ev.name.charAt(7))).hold("");
-        Cell<String> trackerLatitude = simplifiedGpsStream.map((SimpleGpsEvent ev) -> String.valueOf(ev.latitude)).hold("");
-        Cell<String> trackerLongitude = simplifiedGpsStream.map((SimpleGpsEvent ev) -> String.valueOf(ev.longitude)).hold("");
+        Cell<String> trackerNumber = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> String.valueOf(ev.name.charAt(7)) ).hold("N/A");
+        Cell<String> trackerLatitude = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> String.valueOf(ev.latitude) ).hold("N/A");
+        Cell<String> trackerLongitude = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> String.valueOf(ev.longitude) ).hold("N/A");
 
-        // set up SLabels
+        // create SLabels
         SLabel trackerNumberLabel = new SLabel(trackerNumber);
         SLabel trackerLatLabel = new SLabel(trackerLatitude);
         SLabel trackerLongLabel = new SLabel(trackerLongitude);
 
-        // set up normal labels
-        JLabel tNumberLbl = new JLabel("Tracker Number");
-        JLabel tLatLbl = new JLabel("Latitude");
-        JLabel tLongLbl = new JLabel("Longitude");
+        // configure SLabels
+        trackerNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        trackerNumberLabel.setVerticalAlignment(SwingConstants.TOP);
+        trackerLatLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        trackerLatLabel.setVerticalAlignment(SwingConstants.TOP);
+        trackerLongLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        trackerLongLabel.setVerticalAlignment(SwingConstants.TOP);
+
+        // create header labels
+        JLabel tNumberLbl = new JLabel("Tracker Number:");
+        JLabel tLatLbl = new JLabel("Latitude:");
+        JLabel tLongLbl = new JLabel("Longitude:");
+
+        // configure header labels
+        Font header = new Font("Courier", Font.BOLD, 15);
+        tNumberLbl.setHorizontalAlignment(SwingConstants.CENTER);
+        tNumberLbl.setVerticalAlignment(SwingConstants.BOTTOM);
+        tNumberLbl.setFont(header);
+        tLatLbl.setHorizontalAlignment(SwingConstants.CENTER);
+        tLatLbl.setVerticalAlignment(SwingConstants.BOTTOM);
+        tLatLbl.setFont(header);
+        tLongLbl.setHorizontalAlignment(SwingConstants.CENTER);
+        tLongLbl.setVerticalAlignment(SwingConstants.BOTTOM);
+        tLongLbl.setFont(header);
 
         // add labels to display
         trackerDisplay.add(tNumberLbl);

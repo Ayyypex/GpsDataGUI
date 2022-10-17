@@ -1,3 +1,11 @@
+\\---------------- Commit #5 on 17/10/2022 ------------------------------------------------//
+Created SimpleGpsEvent to represent a GpsEvent stripped of its altitude. I mapped the 
+GpsEvent stream to the new SimpleGpsEvent class to strip the altitude. To extract the 
+required fields for the first display, I used map() 3 times to 3 different cells. I then
+added SLabels to track and display the values of the cells as they get updated.
+
+
+
 \\---------------- Commit #4 on 16/10/2022 ------------------------------------------------//
 Updated myGUI class to extend JFrame and moved some configuration options over to main().
 Added the arrays I believe I'll need for the construction of the first component.

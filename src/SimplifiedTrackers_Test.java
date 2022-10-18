@@ -13,26 +13,29 @@ public class SimplifiedTrackers_Test {
     // set up stream that will strip the altitude off the GpsEvent stream
     Stream<SimpleGpsEvent> simpleGpsStream = SimplifiedTrackersComponent.stripAltitude(GpsStream);
 
+    // set up cells to hold each field
+    Cell<String> name = simpleGpsStream.map( (SimpleGpsEvent ev) -> ev.name ).hold("N/A");
+    Cell<Double> latitude = simpleGpsStream.map( (SimpleGpsEvent ev) -> ev.latitude ).hold(-1.11);
+    Cell<Double> longitude = simpleGpsStream.map( (SimpleGpsEvent ev) -> ev.longitude ).hold(-1.11);
+
     // set up and send a test event
     GpsEvent event = new GpsEvent("Tracker0",  0.00, 1.11, 2.22);
     GpsStream.send(event);
 
-    // check that the fields were carried over correctly 
-    simpleGpsStream.listen( (SimpleGpsEvent ev) -> {
-      assertEquals(event.name, ev.name);
-      assertEquals(event.latitude, ev.latitude, 0.00);
-      assertEquals(event.longitude, ev.longitude, 0.00);
-    });
+    // check that the fields were carried over correctly
+    assertEquals(event.name, name.sample());
+    assertEquals(event.latitude, latitude.sample(), 0.00);
+    assertEquals(event.longitude, longitude.sample(), 0.00);
   }
 
   @Test
   public void correctDisplayOutput_test() {
     // set up linked list of GpsEvent StreamSinks
     LinkedList<Stream<GpsEvent>> streams = new LinkedList<Stream<GpsEvent>>();
+    StreamSink<GpsEvent> GpsStream0 = new StreamSink<GpsEvent>();
     StreamSink<GpsEvent> GpsStream1 = new StreamSink<GpsEvent>();
-    StreamSink<GpsEvent> GpsStream2 = new StreamSink<GpsEvent>();
+    streams.add(GpsStream0);
     streams.add(GpsStream1);
-    streams.add(GpsStream2);
 
     // convert linked list to GpsEvent stream array
     Stream<GpsEvent>[] streamsArray = (Stream<GpsEvent>[])streams.toArray(new Stream[0]); // got this line from GpsService
@@ -43,8 +46,8 @@ public class SimplifiedTrackers_Test {
     // create and send events down stream
     GpsEvent ev1 = new GpsEvent("Tracker0", 1.11, 2.22, 3.33);
     GpsEvent ev2 = new GpsEvent("Tracker1", 4.44, 5.55, 6.66);
-    GpsStream1.send(ev1);
-    GpsStream2.send(ev2);
+    GpsStream0.send(ev1);
+    GpsStream1.send(ev2);
 
     // get list of cells we want to check
     ArrayList<Cell<String>> tracker0Cells = display.allCells.get(0);

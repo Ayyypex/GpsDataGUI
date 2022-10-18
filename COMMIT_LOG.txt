@@ -1,3 +1,11 @@
+\\---------------- Commit #10 on 18/10/2022 ------------------------------------------------//
+I updated a test to not use the listen() function because it does not seem to execute the
+handler function while running the test. The test now checks the value by holding values of 
+the stream in cells and then sampling those cells. Wrote some documentation for my testing
+document.
+
+
+
 \\---------------- Commit #9 on 18/10/2022 ------------------------------------------------//
 Wrote another test for SimplifiedTrackersComponent. The test checks that the cells are 
 being passed the correct data and that each group of cells are for the correct tracker.

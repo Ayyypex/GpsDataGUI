@@ -3,12 +3,12 @@ import javax.swing.border.*;
 import java.awt.*;
 import nz.sodium.*;
 import swidgets.*;
+import java.util.ArrayList;
 
 /** My GUI which displays transformed tracker data retrieved from a stream using Sodium FRP operations. */
 public class myGUI extends JFrame {
 
-  // need these while creating the components
-  public Stream<GpsEvent>[] streams;
+  boolean Testing = true;
 
   /** Creates an instance of myGUI and then shows it. */
   public static void main(String[] args) {
@@ -29,12 +29,12 @@ public class myGUI extends JFrame {
     
     // get the tracker's event streams
     GpsService serv = new GpsService();
-    streams = serv.getEventStreams();
+    Stream<GpsEvent>[] streams = serv.getEventStreams();
     
     // add components to gui
     JTabbedPane tabbedPane = new JTabbedPane();
     this.add(tabbedPane);
-    tabbedPane.addTab( "Simplified Trackers", new simplifiedTrackersComponent() );
+    tabbedPane.addTab( "Simplified Trackers", new simplifiedTrackersComponent(streams) );
     tabbedPane.addTab( "All Events", new allEventsComponent() );
     tabbedPane.addTab( "Events within Range", new eventsWithinRangeComponent() );
     tabbedPane.addTab( "Distance travelled within Range", new distanceTravelledComponent() );
@@ -43,25 +43,54 @@ public class myGUI extends JFrame {
   /** Displays ten simplified tracker displays, stripping the altitude from a GpsEvent. */
   public class simplifiedTrackersComponent extends JPanel {
 
-    /** Constructor. */
-    public simplifiedTrackersComponent() {
+    public ArrayList<ArrayList<Cell<String>>> allCells;
+
+    /**
+     * Strips a GpsEvent stream of its altitude. 
+     * 
+     * @param   stream    A stream of GpsEvents
+     * @return  A stream of SimpleGpsEvents
+    */
+    public Stream<SimpleGpsEvent> stripAltitude(Stream<GpsEvent> stream) {
+      return stream.map( (GpsEvent ev) -> new SimpleGpsEvent(ev) );
+    }
+
+    /** Constructs the first required display. */
+    public simplifiedTrackersComponent(Stream<GpsEvent>[] streams) {
       // configure main panel
       this.setLayout(new GridLayout(5, 2, 10, 10));
 
+      // initialize arrayList
+      if (Testing) {
+        allCells = new ArrayList<ArrayList<Cell<String>>>();
+        for ( int i=0; i<streams.length; i++ ) {
+          allCells.add( new ArrayList<Cell<String>>() );
+        }
+      }
+
       // create and add each tracker display
-      for ( Stream<GpsEvent> s : streams ) {
+      for ( int i=0; i<streams.length; i++ ) {
+        Stream<GpsEvent> s = streams[i];
+
         // create and configure display panel
         JPanel trackerDisplay = new JPanel(new GridLayout(2, 3, 0, 5));
         trackerDisplay.setBackground(Color.white);
         trackerDisplay.setBorder(BorderFactory.createEtchedBorder());
 
         // create stream of simplified Gps Events
-        Stream<SimpleGpsEvent> simplifiedGpsStream = s.map( (GpsEvent ev) -> new SimpleGpsEvent(ev) );
+        Stream<SimpleGpsEvent> simplifiedGpsStream = stripAltitude(s);
 
         // set up cells to hold each field
         Cell<String> trackerNumber = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> String.valueOf(ev.name.charAt(7)) ).hold("N/A");
         Cell<String> trackerLatitude = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> String.valueOf(ev.latitude) ).hold("N/A");
         Cell<String> trackerLongitude = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> String.valueOf(ev.longitude) ).hold("N/A");
+
+        // add cells to arraylist
+        if (Testing) {
+          allCells.get(i).add(trackerNumber);
+          allCells.get(i).add(trackerLatitude);
+          allCells.get(i).add(trackerLongitude);
+        }
 
         // create SLabels
         SLabel trackerNumberLabel = new SLabel(trackerNumber);

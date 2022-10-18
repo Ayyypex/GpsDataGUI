@@ -1,3 +1,9 @@
+\\---------------- Commit #9 on 18/10/2022 ------------------------------------------------//
+Wrote another test for SimplifiedTrackersComponent. The test checks that the cells are 
+being passed the correct data and that each group of cells are for the correct tracker.
+
+
+
 \\---------------- Commit #8 on 18/10/2022 ------------------------------------------------//
 Created own file for SimplifiedTrackersComponent and wrote a test for it. It tests whether
 the stripAltitude() function correctly sets the carried over fields. The test doesn't 

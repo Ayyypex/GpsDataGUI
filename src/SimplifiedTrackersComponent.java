@@ -42,9 +42,9 @@ public class SimplifiedTrackersComponent extends JPanel {
       Stream<GpsEvent> s = streams[i];
 
       // create and configure display panel
-      JPanel trackerDisplay = new JPanel(new GridLayout(2, 3, 0, 5));
-      trackerDisplay.setBackground(Color.white);
-      trackerDisplay.setBorder(BorderFactory.createEtchedBorder());
+      JPanel trackerPanel = new JPanel(new GridLayout(2, 3, 0, 5));
+      trackerPanel.setBackground(Color.white);
+      trackerPanel.setBorder(BorderFactory.createEtchedBorder());
 
       // create stream of simplified Gps Events
       Stream<SimpleGpsEvent> simplifiedGpsStream = stripAltitude(s);
@@ -92,15 +92,15 @@ public class SimplifiedTrackersComponent extends JPanel {
       tLongLbl.setFont(header);
 
       // add labels to display
-      trackerDisplay.add(tNumberLbl);
-      trackerDisplay.add(tLatLbl);
-      trackerDisplay.add(tLongLbl);
-      trackerDisplay.add(trackerNumberLabel);
-      trackerDisplay.add(trackerLatLabel);
-      trackerDisplay.add(trackerLongLabel);
+      trackerPanel.add(tNumberLbl);
+      trackerPanel.add(tLatLbl);
+      trackerPanel.add(tLongLbl);
+      trackerPanel.add(trackerNumberLabel);
+      trackerPanel.add(trackerLatLabel);
+      trackerPanel.add(trackerLongLabel);
 
       // add to main panel
-      this.add(trackerDisplay);
+      this.add(trackerPanel);
     }
   }
 }

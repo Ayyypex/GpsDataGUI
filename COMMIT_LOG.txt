@@ -1,3 +1,8 @@
+\\---------------- Commit #14 on 20/10/2022 ------------------------------------------------//
+'Cleaned' up the code.
+
+
+
 \\---------------- Commit #13 on 20/10/2022 ------------------------------------------------//
 Implemented a timer that will clear the event if 3 seconds go by without another event 
 occurring.

@@ -33,14 +33,9 @@ public class myGUI extends JFrame {
     JTabbedPane tabbedPane = new JTabbedPane();
     this.add(tabbedPane);
     tabbedPane.addTab( "Simplified Trackers", new SimplifiedTrackersComponent(streams) );
-    tabbedPane.addTab( "All Events", new AllEventsComponent() );
+    tabbedPane.addTab( "All Events", new AllEventsComponent(streams) );
     tabbedPane.addTab( "Events within Range", new EventsWithinRangeComponent() );
     tabbedPane.addTab( "Distance travelled within Range", new DistanceTravelledComponent() );
-  }
-
-  /** Displays all GpsEvents passed to the GUI at the time they occur. */
-  public class AllEventsComponent extends JPanel {
-    //
   }
 
   /** Displays all GpsEvents within a latitude and longitude range set by a user-configurable control panel. */

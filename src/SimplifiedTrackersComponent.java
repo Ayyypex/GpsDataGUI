@@ -2,13 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import nz.sodium.*;
 import swidgets.*;
-import java.util.ArrayList;
+import java.util.*;
 
 /** Displays ten simplified tracker displays, stripping the altitude from a GpsEvent. */
 public class SimplifiedTrackersComponent extends JPanel {
 
   boolean Testing = true;
-
   public ArrayList<ArrayList<Cell<String>>> allCells;
 
   /**
@@ -16,12 +15,16 @@ public class SimplifiedTrackersComponent extends JPanel {
    * 
    * @param   stream    A stream of GpsEvents
    * @return  A stream of SimpleGpsEvents
-  */
+   */
   public static Stream<SimpleGpsEvent> stripAltitude(Stream<GpsEvent> stream) {
     return stream.map( (GpsEvent ev) -> new SimpleGpsEvent(ev) );
   }
 
-  /** Constructs the first required display. */
+  /** 
+   * Constructs the first required display. 
+   * 
+   * @param  streams   An array of GpsEvent streams that will be displayed.
+   */
   public SimplifiedTrackersComponent(Stream<GpsEvent>[] streams) {
     // configure main panel
     this.setLayout(new GridLayout(5, 2, 10, 10));

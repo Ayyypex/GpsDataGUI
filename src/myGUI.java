@@ -2,8 +2,13 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import nz.sodium.*;
+import nz.sodium.time.*;
+import java.util.*;
 
-/** My GUI which displays transformed tracker data retrieved from a stream using Sodium FRP operations. */
+/** 
+ * My GUI which displays transformed tracker data retrieved from a stream
+ * using Sodium FRP operations. 
+ */
 public class myGUI extends JFrame {
 
   boolean Testing = true;
@@ -34,17 +39,39 @@ public class myGUI extends JFrame {
     this.add(tabbedPane);
     tabbedPane.addTab( "Simplified Trackers", new SimplifiedTrackersComponent(streams) );
     tabbedPane.addTab( "All Events", new AllEventsComponent(streams) );
-    tabbedPane.addTab( "Events within Range", new EventsWithinRangeComponent() );
+    tabbedPane.addTab( "Events within Range", new EventsWithinRangeComponent(streams) );
     tabbedPane.addTab( "Distance travelled within Range", new DistanceTravelledComponent() );
-  }
-
-  /** Displays all GpsEvents within a latitude and longitude range set by a user-configurable control panel. */
-  public class EventsWithinRangeComponent extends JPanel {
-    //
   }
 
   /** Displays the distance travelled over the last 5 minutes for each tracker within the latitude/longitude range. */
   public class DistanceTravelledComponent extends JPanel {
     //
+  }
+
+  /**
+   * Returns a stream that fires an event at specified intervals.
+   * 
+   * @param sys     A Sodium FRP timer system.
+   * @param period  The specified interval that the stream will fire.
+   * @return        A timer in the form of a stream that will repeatedly fire periodically.
+   */
+  public static Stream<Long> periodic(TimerSystem sys, long period) {
+    Cell<Long> time = sys.time;
+    CellLoop<Optional<Long>> oAlarm = new CellLoop<>();
+    Stream<Long> sAlarm = sys.at(oAlarm);
+    oAlarm.loop(
+      sAlarm.map(t -> Optional.of(t + period))
+        .hold(Optional.<Long>of(time.sample() + period)));
+    return sAlarm;
+  }
+
+  /**
+   * Merges an array of GpsEvent streams 
+   * 
+   * @param   streams    An array of GpsEvent streams
+   * @return  A merged stream of all the GpsEvent streams
+  */
+  public static Stream<GpsEvent> mergeStreams(Stream<GpsEvent>[] streams) {    
+    return Stream.orElse(Arrays.asList(streams));
   }
 }

@@ -28,7 +28,7 @@ public class AllEvents_Test {
     GpsEvent ev3 = new GpsEvent("Tracker2", 7.77, 8.88, 9.99);
 
     // get cell we want to check
-    Cell<String> testCell = display.cell;
+    Cell<String> testCell = display.eventCell;
 
     // send events and check that the cell updates appropriately
     GpsStream0.send(ev1);
@@ -53,7 +53,7 @@ public class AllEvents_Test {
     AllEventsComponent display = new AllEventsComponent(streamsArray);
     GpsEvent ev1 = new GpsEvent("Tracker0", 1.11, 2.22, 3.33);
     GpsEvent ev2 = new GpsEvent("Tracker1", 4.44, 5.55, 6.66);
-    Cell<String> testCell = display.cell;
+    Cell<String> testCell = display.eventCell;
 
     GpsStream0.send(ev1);
     assertEquals( ev1.toString(), testCell.sample() );

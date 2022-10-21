@@ -1,6 +1,13 @@
+\\---------------- Commit #17 on 21/10/2022 ------------------------------------------------//
+Moved the mergeStreams() and periodic() functions into myGUI because they will be used by
+multiple classes. Created the EventsWithinRangeComponent file and a new class for a control
+panel because it will be used in two display components.
+
+
+
 \\---------------- Commit #16 on 21/10/2022 ------------------------------------------------//
 Tested the AllEventsComponent by:
-    checking that the eventString cell is receiving the events from the merged stream
+    checking that the eventString cell is receiving all events from the merged stream
     checking that the eventString cell is cleared after ~3 seconds of no event arrivals
 
 

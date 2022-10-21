@@ -9,43 +9,45 @@ import swidgets.*;
  */
 public class ControlPanelComponent extends JPanel {
 
-  public static boolean isValidLat(String latitude) {
-    // check if all numbers + decimal
-    Double lat;
-    try 
-    {
-      lat = Double.parseDouble(latitude);
+  /**
+   * Checks whether a pair of strings are valid coordinates depending on its type.
+   * 
+   * @param minStr  The string representing the min value in a range.
+   * @param maxStr  The string representing the max value in a range.
+   * @param type    The type of string the input should be. 'lat' or 'lon'
+   * @return        true if input is within it's type's range and minStr <= maxStr.
+   */
+  public static boolean checkCoordinates(String minStr, String maxStr, String type) {
+    Double min;
+    Double max;
 
+    // try parsing the input as a double, return false if not a double
+    try { 
+      min = Double.parseDouble(minStr); 
+      max = Double.parseDouble(maxStr); 
     } 
-    catch(NumberFormatException e) 
-    {
-      return false;
+    catch(NumberFormatException e) { 
+      return false; 
     }
     
-    return (lat >= -90.0 && lat <= 90.0);
-  }
-
-  public static boolean isValidLong(String latitude) {
-    // check if all numbers + decimal
-    Double longitude;
-    try 
-    {
-      longitude = Double.parseDouble(latitude);
-
-    } 
-    catch(NumberFormatException e) 
-    {
+    // min can't be bigger than max
+    if ( min > max ) {
       return false;
     }
-    
-    return (longitude >= -180.0 && longitude <= 180.0);
+
+    // return whether value is in range
+    if ( type.equals("lat") ) {
+      return (min >= -90.0 && min <= 90.0 && max >= -90.0 && max <= 90.0);
+    }
+    return (min >= -180.0 && min <= 180.0 && max >= -180.0 && max <= 180.0);
   }
 
+  // temporary, just testing it
   public static void main(String[] args) {
     JFrame frame = new JFrame();
     frame.add( new ControlPanelComponent() );
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setLocationRelativeTo(null);        // place gui window at center of screen
+    frame.setLocationRelativeTo(null);
     frame.setSize( new Dimension(700, 400) );
     frame.setVisible(true);
   }
@@ -54,31 +56,40 @@ public class ControlPanelComponent extends JPanel {
   public Cell<String> latitudeCell;
   public Cell<String> longitudeCell;
 
-  /** 
-   * Constructs the control panel
-   */
+  /** Constructs the control panel. */
   public ControlPanelComponent() {
+    // configure main panel
     this.setLayout(new GridBagLayout());
 
-   
+    JPanel panel = new JPanel( new GridLayout(3,3) );
+
+    // set up STextFields
+    STextField latitudeMin = new STextField("");
+    STextField latitudeMax = new STextField("");
+    STextField longitudeMin = new STextField("");
+    STextField longitudeMax = new STextField("");
     
-    STextField latitudeField = new STextField("");
-    STextField longitudeField = new STextField("");
-    //Stream<String> sText = new S
+    // define business rule
+    Rule validInputRule = new Rule( (latMin, latMax, lonMin, lonMax) -> 
+      checkCoordinates(latMin, latMax, "lat") && checkCoordinates(lonMin, lonMax, "lon") );
     
+    // create cell that holds the business rule validity
+    Cell<Boolean> validInput = validInputRule.reify(latitudeMin.text, latitudeMax.text, longitudeMin.text, longitudeMax.text);
 
-
-
-    Rule r = new Rule((lat,lon) -> isValidLat(lat) && isValidLong(lon));
-    Cell<Boolean> valid = r.reify(latitudeField.text, longitudeField.text);
-
-    SButton apply = new SButton("Apply", valid);
+    // set up SButton that will only be clickable if business rule is met
+    SButton apply = new SButton("Apply", (validInput));
     apply.setFocusable(false);
 
+    //
+    apply.sClicked.listen((e) -> System.out.println(e) );
 
-    this.add(latitudeField);
-    this.add(longitudeField);
-    this.add(apply);
-    
+    // add to main panel
+    panel.add(latitudeMin);
+    panel.add(latitudeMax);
+    panel.add(longitudeMin);
+    panel.add(longitudeMax);
+    panel.add(apply);
+
+    this.add(panel);
   }
 }

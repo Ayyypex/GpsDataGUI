@@ -1,3 +1,9 @@
+\\---------------- Commit #19 on 21/10/2022 ------------------------------------------------//
+Made some progress on the control panel. Modified the Rule class to hold a Lambda4 function
+because we will be using 4 cells as input.
+
+
+
 \\---------------- Commit #18 on 21/10/2022 ------------------------------------------------//
 Removed the timeStampString because the assignment doesn't actually specify it. Began work 
 on the control panel leading me to create a new Rule class that encapsulates business rules.

@@ -17,7 +17,7 @@ public class myGUI extends JFrame {
   public static void main(String[] args) {
     myGUI GUI = new myGUI();
     GUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    GUI.setLocationRelativeTo(null);        // place gui window at center of screen
+    GUI.setLocationRelativeTo(null);
     GUI.setVisible(true);
   }
 

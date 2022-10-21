@@ -34,7 +34,7 @@ public class AllEventsComponent extends JPanel {
     JPanel eventPanel = new JPanel();
     eventPanel.setBackground(Color.white);
     eventPanel.setBorder(BorderFactory.createEtchedBorder());
-    eventPanel.setPreferredSize( new Dimension(500, 50) );
+    eventPanel.setPreferredSize( new Dimension(500, 30) );
     
     // loop() in peridioc can only run in a Transaction 
     Transaction.runVoid(() -> {
@@ -49,28 +49,20 @@ public class AllEventsComponent extends JPanel {
         ((time.sample() - lastEventTime.sample()) > 3000) && (eventString.sample() != "") )
           .map((Long t) -> "");
 
-      // set up cells to hold the event and the time at which it occurs as separate strings
+      // set up cell to hold the event as a string
       eventString.loop( 
         allStreams.map( (GpsEvent ev) -> ev.toString() )
           .orElse(clearStream)
             .hold("") );
-      Cell<String> timeStampString = allStreams.map( (GpsEvent ev) -> 
-        "at: " + String.valueOf(java.time.LocalTime.now()) )
-          .orElse(clearStream)
-            .hold("");
 
       // set testing cell
       if (Testing) {
         eventCell = eventString;
       }
 
-      // create SLabels
+      // create SLabel and add to panel
       SLabel eventStringLabel = new SLabel(eventString);
-      SLabel timeStampLabel = new SLabel(timeStampString);
-
-      // add labels to display
       eventPanel.add(eventStringLabel);
-      eventPanel.add(timeStampLabel);
     });
 
     // add to main panel

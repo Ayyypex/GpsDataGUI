@@ -1,3 +1,10 @@
+\\---------------- Commit #18 on 21/10/2022 ------------------------------------------------//
+Removed the timeStampString because the assignment doesn't actually specify it. Began work 
+on the control panel leading me to create a new Rule class that encapsulates business rules.
+This allows the control panel to only apply valid latitude and longitudes.
+
+
+
 \\---------------- Commit #17 on 21/10/2022 ------------------------------------------------//
 Moved the mergeStreams() and periodic() functions into myGUI because they will be used by
 multiple classes. Created the EventsWithinRangeComponent file and a new class for a control

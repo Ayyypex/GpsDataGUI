@@ -1,3 +1,10 @@
+\\---------------- Commit #16 on 21/10/2022 ------------------------------------------------//
+Tested the AllEventsComponent by:
+    checking that the eventString cell is receiving the events from the merged stream
+    checking that the eventString cell is cleared after ~3 seconds of no event arrivals
+
+
+
 \\---------------- Commit #15 on 21/10/2022 ------------------------------------------------//
 Indented to a new line when a primitive or long Lambda function is usedto reduce the length
 of the lines. Created test file for the AllEventsComponent.

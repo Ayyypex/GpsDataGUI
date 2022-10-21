@@ -41,7 +41,7 @@ public class SimplifiedTrackers_Test {
     streams.add(GpsStream1);
 
     // convert linked list to GpsEvent stream array
-    Stream<GpsEvent>[] streamsArray = (Stream<GpsEvent>[])streams.toArray(new Stream[0]); // got this line from GpsService
+    Stream<GpsEvent>[] streamsArray = (Stream<GpsEvent>[])streams.toArray(new Stream[0]);
 
     // create instance of the component with the streamsArray
     SimplifiedTrackersComponent display = new SimplifiedTrackersComponent(streamsArray);

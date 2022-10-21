@@ -1,3 +1,9 @@
+\\---------------- Commit #15 on 21/10/2022 ------------------------------------------------//
+Indented to a new line when a primitive or long Lambda function is usedto reduce the length
+of the lines. Created test file for the AllEventsComponent.
+
+
+
 \\---------------- Commit #14 on 20/10/2022 ------------------------------------------------//
 'Cleaned' up the code.
 

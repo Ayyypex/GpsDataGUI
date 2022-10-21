@@ -50,9 +50,15 @@ public class SimplifiedTrackersComponent extends JPanel {
       Stream<SimpleGpsEvent> simplifiedGpsStream = stripAltitude(s);
 
       // set up cells to hold each field
-      Cell<String> trackerNumber = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> String.valueOf(ev.name.charAt(7)) ).hold("N/A");
-      Cell<String> trackerLatitude = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> String.valueOf(ev.latitude) ).hold("N/A");
-      Cell<String> trackerLongitude = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> String.valueOf(ev.longitude) ).hold("N/A");
+      Cell<String> trackerNumber = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> 
+        String.valueOf(ev.name.charAt(7)) )
+          .hold("N/A");
+      Cell<String> trackerLatitude = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> 
+        String.valueOf(ev.latitude) )
+          .hold("N/A");
+      Cell<String> trackerLongitude = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> 
+        String.valueOf(ev.longitude) )
+          .hold("N/A");
 
       // add cells to arraylist
       if (Testing) {

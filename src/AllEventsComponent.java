@@ -55,7 +55,8 @@ public class AllEventsComponent extends JPanel {
     Stream<GpsEvent> allStreams = mergeStreams(streams);
 
     // record system time of last event occurrence
-    Cell<Long> lastEventTime = allStreams.map( (GpsEvent ev) -> time.sample() ).hold(Long.valueOf(0));
+    Cell<Long> lastEventTime = allStreams.map( (GpsEvent ev) -> time.sample() )
+      .hold(Long.valueOf(0));
 
     // create and configure event panel that info will be displayed in
     JPanel eventPanel = new JPanel();
@@ -68,15 +69,28 @@ public class AllEventsComponent extends JPanel {
       // create stream that will fire an event every 0.1 seconds
       Stream<Long> timerStream = periodic(sys, 100);
 
-      // create CellLoop for eventString, as the clearStream will check whether it is empty or not, so that it doesn't repeatedly fire an empty string
+      // create CellLoop for eventString to prevent repeatedly firing an empty string
       CellLoop<String> eventString = new CellLoop<>();
 
-      // at every event, produce empty string if the time between the last event and now has exceeded 3 seconds and the eventString isn't already empty
-      Stream<String> clearStream = timerStream.filter( (Long t) -> ((time.sample() - lastEventTime.sample()) > 3000) && (eventString.sample() != "")  ).map((Long t) -> "");
+      // fire empty string if > 3 seconds since last event and eventString isn't empty
+      Stream<String> clearStream = timerStream.filter( (Long t) -> 
+        ((time.sample() - lastEventTime.sample()) > 3000) && (eventString.sample() != "") )
+          .map((Long t) -> "");
 
       // set up cells to hold the event and the time at which it occurs as separate strings
-      eventString.loop( allStreams.map( (GpsEvent ev) -> ev.toString() ).orElse(clearStream).hold("") );
-      Cell<String> timeStampString = allStreams.map( (GpsEvent ev) -> "at: " + String.valueOf(java.time.LocalTime.now()) ).orElse(clearStream).hold("");
+      eventString.loop( 
+        allStreams.map( (GpsEvent ev) -> ev.toString() )
+          .orElse(clearStream)
+            .hold("") );
+      Cell<String> timeStampString = allStreams.map( (GpsEvent ev) -> 
+        "at: " + String.valueOf(java.time.LocalTime.now()) )
+          .orElse(clearStream)
+            .hold("");
+
+      // set testing cell
+      if (Testing) {
+        cell = eventString;
+      }
 
       // create SLabels
       SLabel eventStringLabel = new SLabel(eventString);

@@ -3,7 +3,7 @@ import org.junit.*;
 import nz.sodium.*;
 import java.util.*;
 
-/** Tests the simplifiedTrackersComponent. */
+/** Tests the SimplifiedTrackersComponent. */
 public class SimplifiedTrackers_Test {
   @Test
   public void stripAltitude_test() {
@@ -14,18 +14,21 @@ public class SimplifiedTrackers_Test {
     Stream<SimpleGpsEvent> simpleGpsStream = SimplifiedTrackersComponent.stripAltitude(GpsStream);
 
     // set up cells to hold each field
-    Cell<String> name = simpleGpsStream.map( (SimpleGpsEvent ev) -> ev.name ).hold("N/A");
-    Cell<Double> latitude = simpleGpsStream.map( (SimpleGpsEvent ev) -> ev.latitude ).hold(-1.11);
-    Cell<Double> longitude = simpleGpsStream.map( (SimpleGpsEvent ev) -> ev.longitude ).hold(-1.11);
+    Cell<String> name = simpleGpsStream.map( (SimpleGpsEvent ev) -> ev.name )
+      .hold("N/A");
+    Cell<Double> latitude = simpleGpsStream.map( (SimpleGpsEvent ev) -> ev.latitude )
+      .hold(-1.11);
+    Cell<Double> longitude = simpleGpsStream.map( (SimpleGpsEvent ev) -> ev.longitude )
+      .hold(-1.11);
 
     // set up and send a test event
     GpsEvent event = new GpsEvent("Tracker0",  0.00, 1.11, 2.22);
     GpsStream.send(event);
 
     // check that the fields were carried over correctly
-    assertEquals(event.name, name.sample());
-    assertEquals(event.latitude, latitude.sample(), 0.00);
-    assertEquals(event.longitude, longitude.sample(), 0.00);
+    assertEquals( event.name, name.sample() );
+    assertEquals( event.latitude, latitude.sample(), 0.00 );
+    assertEquals( event.longitude, longitude.sample(), 0.00 );
   }
 
   @Test
@@ -54,12 +57,12 @@ public class SimplifiedTrackers_Test {
     ArrayList<Cell<String>> tracker1Cells = display.allCells.get(1);
 
     // check that the tracker number, latitude, and longitude are as expected
-    assertEquals(String.valueOf(ev1.name.charAt(7)), tracker0Cells.get(0).sample());
-    assertEquals(String.valueOf(ev1.latitude), tracker0Cells.get(1).sample());
-    assertEquals(String.valueOf(ev1.longitude), tracker0Cells.get(2).sample());
+    assertEquals( String.valueOf(ev1.name.charAt(7)), tracker0Cells.get(0).sample() );
+    assertEquals( String.valueOf(ev1.latitude), tracker0Cells.get(1).sample() );
+    assertEquals( String.valueOf(ev1.longitude), tracker0Cells.get(2).sample() );
 
-    assertEquals(String.valueOf(ev2.name.charAt(7)), tracker1Cells.get(0).sample());
-    assertEquals(String.valueOf(ev2.latitude), tracker1Cells.get(1).sample());
-    assertEquals(String.valueOf(ev2.longitude), tracker1Cells.get(2).sample());
+    assertEquals( String.valueOf(ev2.name.charAt(7)), tracker1Cells.get(0).sample() );
+    assertEquals( String.valueOf(ev2.latitude), tracker1Cells.get(1).sample() );
+    assertEquals( String.valueOf(ev2.longitude), tracker1Cells.get(2).sample() );
   }
 }

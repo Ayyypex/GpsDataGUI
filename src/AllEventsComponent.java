@@ -8,7 +8,7 @@ import swidgets.*;
 public class AllEventsComponent extends JPanel {
 
   boolean Testing = true;
-  public Cell<String> eventCell;
+  public Cell<String> cEvent;
 
   /** 
    * Constructs the second required display. 
@@ -21,13 +21,13 @@ public class AllEventsComponent extends JPanel {
 
     // set up Sodium FRP timer system and cell to hold the current time
     TimerSystem sys = new MillisecondsTimerSystem();
-    Cell<Long> time = sys.time;
+    Cell<Long> cTime = sys.time;
 
     // merge streams
-    Stream<GpsEvent> allStreams = myGUI.mergeStreams(streams);
+    Stream<GpsEvent> sAll = myGUI.mergeStreams(streams);
 
     // record system time of last event occurrence
-    Cell<Long> lastEventTime = allStreams.map( (GpsEvent ev) -> time.sample() )
+    Cell<Long> cLastEventTime = sAll.map( (GpsEvent ev) -> cTime.sample() )
       .hold(Long.valueOf(0));
 
     // create and configure event panel that info will be displayed in
@@ -39,29 +39,29 @@ public class AllEventsComponent extends JPanel {
     // loop() in peridioc can only run in a Transaction 
     Transaction.runVoid(() -> {
       // create stream that will fire an event every 0.1 seconds
-      Stream<Long> timerStream = myGUI.periodic(sys, 100);
+      Stream<Long> sTimer = myGUI.periodic(sys, 100);
 
       // create CellLoop for eventString to prevent repeatedly firing an empty string
-      CellLoop<String> eventString = new CellLoop<>();
+      CellLoop<String> cEventString = new CellLoop<>();
 
       // fire empty string if > 3 seconds since last event and eventString isn't empty
-      Stream<String> clearStream = timerStream.filter( (Long t) -> 
-        ((time.sample() - lastEventTime.sample()) > 3000) && (eventString.sample() != "") )
+      Stream<String> sClear = sTimer.filter( (Long t) -> 
+        ((cTime.sample() - cLastEventTime.sample()) > 3000) && (cEventString.sample() != "") )
           .map((Long t) -> "");
 
       // set up cell to hold the event as a string
-      eventString.loop( 
-        allStreams.map( (GpsEvent ev) -> ev.toString() )
-          .orElse(clearStream)
+      cEventString.loop( 
+        sAll.map( (GpsEvent ev) -> ev.toString() )
+          .orElse(sClear)
             .hold("") );
 
       // set testing cell
       if (Testing) {
-        eventCell = eventString;
+        cEvent = cEventString;
       }
 
       // create SLabel and add to panel
-      SLabel eventStringLabel = new SLabel(eventString);
+      SLabel eventStringLabel = new SLabel(cEventString);
       eventPanel.add(eventStringLabel);
     });
 

@@ -1,3 +1,11 @@
+\\---------------- Commit #21 on 22/10/2022 ------------------------------------------------//
+Used the naming convention in the book where 's' is prepended before a stream variable. I
+also did the same for cells by prepending a 'c'. Finished the main functionality required
+for the control panel, by setting up cells to hold the snapshotted values upon the click of 
+the button. Also finished the structure of the panel using GridBagLayout.
+
+
+
 \\---------------- Commit #20 on 22/10/2022 ------------------------------------------------//
 Updated the SimpleTrackersComponent such that a cell holds a SimpleGpsEvent, and the 3 cells
 get their values by mapping from that cell. Updated SimpleGpsEvent class to reflect these

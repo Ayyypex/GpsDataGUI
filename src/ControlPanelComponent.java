@@ -17,7 +17,7 @@ public class ControlPanelComponent extends JPanel {
    * @param type    The type of string the input should be. 'lat' or 'lon'
    * @return        true if input is within it's type's range and minStr <= maxStr.
    */
-  public static boolean checkCoordinates(String minStr, String maxStr, String type) {
+  public static boolean checkCoord(String minStr, String maxStr, String type) {
     Double min;
     Double max;
 
@@ -47,8 +47,8 @@ public class ControlPanelComponent extends JPanel {
     JFrame frame = new JFrame();
     frame.add( new ControlPanelComponent() );
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setSize( new Dimension(1000, 700) );
     frame.setLocationRelativeTo(null);
-    frame.setSize( new Dimension(700, 400) );
     frame.setVisible(true);
   }
 
@@ -60,36 +60,157 @@ public class ControlPanelComponent extends JPanel {
   public ControlPanelComponent() {
     // configure main panel
     this.setLayout(new GridBagLayout());
-
-    JPanel panel = new JPanel( new GridLayout(3,3) );
-
-    // set up STextFields
-    STextField latitudeMin = new STextField("");
-    STextField latitudeMax = new STextField("");
-    STextField longitudeMin = new STextField("");
-    STextField longitudeMax = new STextField("");
+    this.setBorder(BorderFactory.createEtchedBorder());
+    this.setPreferredSize( new Dimension(500, 300) );
+    GridBagConstraints c = new GridBagConstraints();
+    c.insets = new Insets(5, 5, 5, 5);
     
     // define business rule
-    Rule validInputRule = new Rule( (latMin, latMax, lonMin, lonMax) -> 
-      checkCoordinates(latMin, latMax, "lat") && checkCoordinates(lonMin, lonMax, "lon") );
+    Rule validInputRule = new Rule( (lat1, lat2, lon1, lon2) -> 
+      checkCoord(lat1, lat2, "lat") && checkCoord(lon1, lon2, "lon") );
     
-    // create cell that holds the business rule validity
-    Cell<Boolean> validInput = validInputRule.reify(latitudeMin.text, latitudeMax.text, longitudeMin.text, longitudeMax.text);
+    // loop() needs to be run in explicit Transaction
+    Transaction.runVoid(() -> {
 
-    // set up SButton that will only be clickable if business rule is met
-    SButton apply = new SButton("Apply", (validInput));
-    apply.setFocusable(false);
+      // create CellLoop so we can have the apply button also clear the text fields
+      CellLoop<Boolean> cValidInput = new CellLoop<>();
 
-    //
-    apply.sClicked.listen((e) -> System.out.println(e) );
+      // set up SButton that will only be clickable if business rule is met
+      SButton apply = new SButton("Apply", (cValidInput));
+      apply.setFocusable(false);
 
-    // add to main panel
-    panel.add(latitudeMin);
-    panel.add(latitudeMax);
-    panel.add(longitudeMin);
-    panel.add(longitudeMax);
-    panel.add(apply);
+      // set up clear stream that will fire an empty string upon the button click
+      Stream<String> sClear = apply.sClicked.map(u -> "");
 
-    this.add(panel);
+      // set up STextFields
+      STextField latMin = new STextField(sClear, "");
+      STextField latMax = new STextField(sClear, "");
+      STextField lonMin = new STextField(sClear, "");
+      STextField lonMax = new STextField(sClear, "");
+
+      // set cell to hold the business rule validity
+      cValidInput.loop(
+        validInputRule.reify(latMin.text, latMax.text, lonMin.text, lonMax.text) );
+      
+      // set up cells to hold the lat/lon values upon the click of the button
+      Cell<String> cLatMin = apply.sClicked.snapshot(latMin.text, (u, lat1) -> lat1)
+        .hold("-90.0");
+      Cell<String> cLatMax = apply.sClicked.snapshot(latMax.text, (u, lat2) -> lat2)
+        .hold("90.0");
+      Cell<String> cLonMin = apply.sClicked.snapshot(lonMin.text, (u, lon1) -> lon1)
+        .hold("-180.0");
+      Cell<String> cLonMax = apply.sClicked.snapshot(lonMax.text, (u, lon2) -> lon2)
+        .hold("180.0");
+
+      // set up Slabels to display the current restrictions
+      SLabel latMinLabel = new SLabel(cLatMin);
+      SLabel latMaxLabel = new SLabel(cLatMax);
+      SLabel lonMinLabel = new SLabel(cLonMin);
+      SLabel lonMaxLabel = new SLabel(cLonMax);
+
+      // set up header labels
+      JLabel latHeader1 = new JLabel("Latitude");
+      JLabel latHeader2 = new JLabel("Latitude");
+      JLabel lonHeader1 = new JLabel("Longitude");
+      JLabel lonHeader2 = new JLabel("Longitude");
+      JLabel minHeader = new JLabel("Min: ");
+      JLabel maxHeader = new JLabel("Max: ");
+      JLabel currMinHeader = new JLabel("Current Min: ");
+      JLabel currMaxHeader = new JLabel("Current Max: ");
+
+      // configure spacing and add each element to subpanel
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=1;  // column
+      c.gridy=0;  // row
+      this.add(minHeader, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=2;  
+      c.gridy=0;  
+      this.add(maxHeader, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=0;
+      c.gridy=1;
+      this.add(latHeader1, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=1;
+      c.gridy=1;
+      this.add(latMin, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=2;
+      c.gridy=1;
+      this.add(latMax, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=0;
+      c.gridy=2;
+      this.add(lonHeader1, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=1;
+      c.gridy=2;
+      this.add(lonMin, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=2;
+      c.gridy=2;
+      this.add(lonMax, c);
+      
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridwidth = 2;
+      c.gridx=1;
+      c.gridy=3;
+      this.add(apply, c);
+
+      JSeparator sep = new JSeparator(SwingConstants.HORIZONTAL);
+      sep.setForeground(Color.black);
+      sep.setBackground(Color.black);
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridy=4;
+      this.add(sep, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=1;  
+      c.gridy=5;  
+      this.add(currMinHeader, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=2;
+      c.gridy=5;
+      this.add(currMaxHeader, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=0;
+      c.gridy=6;
+      this.add(latHeader2, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=1;
+      c.gridy=6;
+      this.add(latMinLabel, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=2;
+      c.gridy=6;
+      this.add(latMaxLabel, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=0;
+      c.gridy=7;
+      this.add(lonHeader2, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=1;
+      c.gridy=7;
+      this.add(lonMinLabel, c);
+
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridx=2;
+      c.gridy=7;
+      this.add(lonMaxLabel, c);      
+    });
   }
 }

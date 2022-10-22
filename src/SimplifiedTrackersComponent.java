@@ -47,55 +47,56 @@ public class SimplifiedTrackersComponent extends JPanel {
       trackerPanel.setBorder(BorderFactory.createEtchedBorder());
 
       // set up cell to hold the stripped stream's SimpleGpsEvent
-      Cell<SimpleGpsEvent> event = stripAltitude(s).hold( new SimpleGpsEvent() );
+      Cell<SimpleGpsEvent> cEvent = stripAltitude(s)
+        .hold( new SimpleGpsEvent() );
 
       // set up cells to hold each field
-      Cell<String> trackerNumber = event.map( (SimpleGpsEvent ev) -> ev.getTrackerNumber() );
-      Cell<String> trackerLatitude = event.map( (SimpleGpsEvent ev) -> ev.getLatitude() );
-      Cell<String> trackerLongitude = event.map( (SimpleGpsEvent ev) -> ev.getLongitude() );
+      Cell<String> cTrackerNumber = cEvent.map( (SimpleGpsEvent ev) -> ev.getTrackerNumber() );
+      Cell<String> cTrackerLatitude = cEvent.map( (SimpleGpsEvent ev) -> ev.getLatitude() );
+      Cell<String> cTrackerLongitude = cEvent.map( (SimpleGpsEvent ev) -> ev.getLongitude() );
 
       // add cells to arraylist
       if (Testing) {
-        allCells.get(i).add(trackerNumber);
-        allCells.get(i).add(trackerLatitude);
-        allCells.get(i).add(trackerLongitude);
+        allCells.get(i).add(cTrackerNumber);
+        allCells.get(i).add(cTrackerLatitude);
+        allCells.get(i).add(cTrackerLongitude);
       }
 
       // create SLabels
-      SLabel trackerNumberLabel = new SLabel(trackerNumber);
-      SLabel trackerLatLabel = new SLabel(trackerLatitude);
-      SLabel trackerLongLabel = new SLabel(trackerLongitude);
+      SLabel trackerNumLabel = new SLabel(cTrackerNumber);
+      SLabel trackerLatLabel = new SLabel(cTrackerLatitude);
+      SLabel trackerLongLabel = new SLabel(cTrackerLongitude);
 
       // configure SLabels
-      trackerNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
-      trackerNumberLabel.setVerticalAlignment(SwingConstants.TOP);
+      trackerNumLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      trackerNumLabel.setVerticalAlignment(SwingConstants.TOP);
       trackerLatLabel.setHorizontalAlignment(SwingConstants.CENTER);
       trackerLatLabel.setVerticalAlignment(SwingConstants.TOP);
       trackerLongLabel.setHorizontalAlignment(SwingConstants.CENTER);
       trackerLongLabel.setVerticalAlignment(SwingConstants.TOP);
 
       // create header labels
-      JLabel tNumberLbl = new JLabel("Tracker Number:");
-      JLabel tLatLbl = new JLabel("Latitude:");
-      JLabel tLongLbl = new JLabel("Longitude:");
+      JLabel trackerNumHeader = new JLabel("Tracker Number:");
+      JLabel trackerLatHeader = new JLabel("Latitude:");
+      JLabel trackerLonHeader = new JLabel("Longitude:");
 
       // configure header labels
       Font header = new Font("Courier", Font.BOLD, 15);
-      tNumberLbl.setHorizontalAlignment(SwingConstants.CENTER);
-      tNumberLbl.setVerticalAlignment(SwingConstants.BOTTOM);
-      tNumberLbl.setFont(header);
-      tLatLbl.setHorizontalAlignment(SwingConstants.CENTER);
-      tLatLbl.setVerticalAlignment(SwingConstants.BOTTOM);
-      tLatLbl.setFont(header);
-      tLongLbl.setHorizontalAlignment(SwingConstants.CENTER);
-      tLongLbl.setVerticalAlignment(SwingConstants.BOTTOM);
-      tLongLbl.setFont(header);
+      trackerNumHeader.setHorizontalAlignment(SwingConstants.CENTER);
+      trackerNumHeader.setVerticalAlignment(SwingConstants.BOTTOM);
+      trackerNumHeader.setFont(header);
+      trackerLatHeader.setHorizontalAlignment(SwingConstants.CENTER);
+      trackerLatHeader.setVerticalAlignment(SwingConstants.BOTTOM);
+      trackerLatHeader.setFont(header);
+      trackerLonHeader.setHorizontalAlignment(SwingConstants.CENTER);
+      trackerLonHeader.setVerticalAlignment(SwingConstants.BOTTOM);
+      trackerLonHeader.setFont(header);
 
       // add labels to display
-      trackerPanel.add(tNumberLbl);
-      trackerPanel.add(tLatLbl);
-      trackerPanel.add(tLongLbl);
-      trackerPanel.add(trackerNumberLabel);
+      trackerPanel.add(trackerNumHeader);
+      trackerPanel.add(trackerLatHeader);
+      trackerPanel.add(trackerLonHeader);
+      trackerPanel.add(trackerNumLabel);
       trackerPanel.add(trackerLatLabel);
       trackerPanel.add(trackerLongLabel);
 

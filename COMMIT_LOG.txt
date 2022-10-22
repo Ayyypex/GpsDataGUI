@@ -1,3 +1,12 @@
+\\---------------- Commit #23 on 22/10/2022 ------------------------------------------------//
+Finished testing the ControlPanelComponent. The tests check:
+    valid and invalid latitude inputs
+    valid and invalid longitude inputs
+    applying the restriction sets the cells values correctly
+    applying the restriction clears the text fields
+
+
+
 \\---------------- Commit #22 on 22/10/2022 ------------------------------------------------//
 Set up for testing.
 

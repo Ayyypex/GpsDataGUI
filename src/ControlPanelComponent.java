@@ -9,17 +9,10 @@ import swidgets.*;
  */
 public class ControlPanelComponent extends JPanel {
 
-  public STextField latMin;
-  public STextField latMax;
-  public STextField lonMin;
-  public STextField lonMax;
-
   public Cell<String> cLatMin;
   public Cell<String> cLatMax;
   public Cell<String> cLonMin;
   public Cell<String> cLonMax;
-
-  public CellLoop<Boolean> cValidInput;
 
   /**
    * Checks whether a pair of strings are valid coordinates depending on its type.
@@ -38,7 +31,7 @@ public class ControlPanelComponent extends JPanel {
       min = Double.parseDouble(minStr); 
       max = Double.parseDouble(maxStr); 
     } 
-    catch(NumberFormatException e) { 
+    catch (NumberFormatException e) { 
       return false; 
     }
     
@@ -63,15 +56,14 @@ public class ControlPanelComponent extends JPanel {
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(5, 5, 5, 5);
     
-    // define business rule
-    Rule validInputRule = new Rule( (lat1, lat2, lon1, lon2) -> 
-      checkCoord(lat1, lat2, "lat") && checkCoord(lon1, lon2, "lon") );
-    
     // loop() needs to be run in explicit Transaction
     Transaction.runVoid(() -> {
+      // define business rule
+      Rule validInputRule = new Rule( (lat1, lat2, lon1, lon2) -> 
+        checkCoord(lat1, lat2, "lat") && checkCoord(lon1, lon2, "lon") );
 
       // create CellLoop so the apply button also clears the text fields
-      cValidInput = new CellLoop<>();
+      CellLoop<Boolean> cValidInput = new CellLoop<>();
 
       // set up SButton that will only be clickable if business rule is met
       SButton apply = new SButton("Apply", cValidInput);
@@ -81,10 +73,10 @@ public class ControlPanelComponent extends JPanel {
       Stream<String> sClear = apply.sClicked.map(u -> "");
 
       // set up STextFields
-      latMin = new STextField(sClear, "");
-      latMax = new STextField(sClear, "");
-      lonMin = new STextField(sClear, "");
-      lonMax = new STextField(sClear, "");
+      STextField latMin = new STextField(sClear, "");
+      STextField latMax = new STextField(sClear, "");
+      STextField lonMin = new STextField(sClear, "");
+      STextField lonMax = new STextField(sClear, "");
 
       // set cell to hold the business rule validity
       cValidInput.loop(

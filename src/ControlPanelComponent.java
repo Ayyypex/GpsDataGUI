@@ -9,6 +9,18 @@ import swidgets.*;
  */
 public class ControlPanelComponent extends JPanel {
 
+  public STextField latMin;
+  public STextField latMax;
+  public STextField lonMin;
+  public STextField lonMax;
+
+  public Cell<String> cLatMin;
+  public Cell<String> cLatMax;
+  public Cell<String> cLonMin;
+  public Cell<String> cLonMax;
+
+  public CellLoop<Boolean> cValidInput;
+
   /**
    * Checks whether a pair of strings are valid coordinates depending on its type.
    * 
@@ -42,26 +54,12 @@ public class ControlPanelComponent extends JPanel {
     return (min >= -180.0 && min <= 180.0 && max >= -180.0 && max <= 180.0);
   }
 
-  // temporary, just testing it
-  public static void main(String[] args) {
-    JFrame frame = new JFrame();
-    frame.add( new ControlPanelComponent() );
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize( new Dimension(1000, 700) );
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
-  }
-
-  boolean Testing = true;
-  public Cell<String> latitudeCell;
-  public Cell<String> longitudeCell;
-
   /** Constructs the control panel. */
   public ControlPanelComponent() {
     // configure main panel
     this.setLayout(new GridBagLayout());
     this.setBorder(BorderFactory.createEtchedBorder());
-    this.setPreferredSize( new Dimension(500, 300) );
+    this.setPreferredSize(new Dimension(500, 300));
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(5, 5, 5, 5);
     
@@ -72,34 +70,34 @@ public class ControlPanelComponent extends JPanel {
     // loop() needs to be run in explicit Transaction
     Transaction.runVoid(() -> {
 
-      // create CellLoop so we can have the apply button also clear the text fields
-      CellLoop<Boolean> cValidInput = new CellLoop<>();
+      // create CellLoop so the apply button also clears the text fields
+      cValidInput = new CellLoop<>();
 
       // set up SButton that will only be clickable if business rule is met
-      SButton apply = new SButton("Apply", (cValidInput));
+      SButton apply = new SButton("Apply", cValidInput);
       apply.setFocusable(false);
 
-      // set up clear stream that will fire an empty string upon the button click
+      // set up stream that will fire an empty string upon the button click
       Stream<String> sClear = apply.sClicked.map(u -> "");
 
       // set up STextFields
-      STextField latMin = new STextField(sClear, "");
-      STextField latMax = new STextField(sClear, "");
-      STextField lonMin = new STextField(sClear, "");
-      STextField lonMax = new STextField(sClear, "");
+      latMin = new STextField(sClear, "");
+      latMax = new STextField(sClear, "");
+      lonMin = new STextField(sClear, "");
+      lonMax = new STextField(sClear, "");
 
       // set cell to hold the business rule validity
       cValidInput.loop(
         validInputRule.reify(latMin.text, latMax.text, lonMin.text, lonMax.text) );
       
       // set up cells to hold the lat/lon values upon the click of the button
-      Cell<String> cLatMin = apply.sClicked.snapshot(latMin.text, (u, lat1) -> lat1)
+      cLatMin = apply.sClicked.snapshot(latMin.text, (u, lat1) -> lat1)
         .hold("-90.0");
-      Cell<String> cLatMax = apply.sClicked.snapshot(latMax.text, (u, lat2) -> lat2)
+      cLatMax = apply.sClicked.snapshot(latMax.text, (u, lat2) -> lat2)
         .hold("90.0");
-      Cell<String> cLonMin = apply.sClicked.snapshot(lonMin.text, (u, lon1) -> lon1)
+      cLonMin = apply.sClicked.snapshot(lonMin.text, (u, lon1) -> lon1)
         .hold("-180.0");
-      Cell<String> cLonMax = apply.sClicked.snapshot(lonMax.text, (u, lon2) -> lon2)
+      cLonMax = apply.sClicked.snapshot(lonMax.text, (u, lon2) -> lon2)
         .hold("180.0");
 
       // set up Slabels to display the current restrictions

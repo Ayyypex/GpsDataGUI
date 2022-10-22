@@ -46,19 +46,13 @@ public class SimplifiedTrackersComponent extends JPanel {
       trackerPanel.setBackground(Color.white);
       trackerPanel.setBorder(BorderFactory.createEtchedBorder());
 
-      // create stream of simplified Gps Events
-      Stream<SimpleGpsEvent> simplifiedGpsStream = stripAltitude(s);
+      // set up cell to hold the stripped stream's SimpleGpsEvent
+      Cell<SimpleGpsEvent> event = stripAltitude(s).hold( new SimpleGpsEvent() );
 
       // set up cells to hold each field
-      Cell<String> trackerNumber = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> 
-        String.valueOf(ev.name.charAt(7)) )
-          .hold("N/A");
-      Cell<String> trackerLatitude = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> 
-        String.valueOf(ev.latitude) )
-          .hold("N/A");
-      Cell<String> trackerLongitude = simplifiedGpsStream.map( (SimpleGpsEvent ev) -> 
-        String.valueOf(ev.longitude) )
-          .hold("N/A");
+      Cell<String> trackerNumber = event.map( (SimpleGpsEvent ev) -> ev.getTrackerNumber() );
+      Cell<String> trackerLatitude = event.map( (SimpleGpsEvent ev) -> ev.getLatitude() );
+      Cell<String> trackerLongitude = event.map( (SimpleGpsEvent ev) -> ev.getLongitude() );
 
       // add cells to arraylist
       if (Testing) {

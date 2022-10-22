@@ -1,3 +1,10 @@
+\\---------------- Commit #20 on 22/10/2022 ------------------------------------------------//
+Updated the SimpleTrackersComponent such that a cell holds a SimpleGpsEvent, and the 3 cells
+get their values by mapping from that cell. Updated SimpleGpsEvent class to reflect these
+changes and put some of the work in the class.
+
+
+
 \\---------------- Commit #19 on 21/10/2022 ------------------------------------------------//
 Made some progress on the control panel. Modified the Rule class to hold a Lambda4 function
 because we will be using 4 cells as input.

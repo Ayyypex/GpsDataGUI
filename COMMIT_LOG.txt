@@ -1,3 +1,8 @@
+\\---------------- Commit #28 on 23/10/2022 ------------------------------------------------//
+Implemented the sliding window in the form of a stream.
+
+
+
 \\---------------- Commit #27 on 23/10/2022 ------------------------------------------------//
 Added field to GpsEvent to hold the time it was added to the DistanceTravelledComponent. 
 Created the Sodium logic to remove events older than 5 seconds from the accumulating cell

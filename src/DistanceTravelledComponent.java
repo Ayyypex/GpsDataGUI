@@ -29,40 +29,59 @@ public class DistanceTravelledComponent extends JPanel {
    */
   public DistanceTravelledComponent(Stream<GpsEvent>[] streams) {
     // set up Sodium FRP timer system and cell to hold the current time
-    TimerSystem sys = new SecondsTimerSystem();
-    Cell<Double> cTime = sys.time;
+    MillisecondsTimerSystem sys = new MillisecondsTimerSystem();
+    Cell<Long> cTime = sys.time;
     
     Stream<GpsEvent> sGpsEvent = streams[1];
 
     // accumulate events
-    Cell<ArrayList<GpsEvent>> allEvents = sGpsEvent.accum(new ArrayList<GpsEvent>(), (ev, list) -> {
+    Cell<ArrayList<GpsEvent>> allEvents = sGpsEvent.accum( new ArrayList<GpsEvent>(), (ev, list) -> {
       ev.name+=String.valueOf(cTime.sample());
-      ev.setTime(cTime.sample());
+      ev.setTime( cTime.sample() );
       list.add(ev);
       return list;
     })
-    // remove events older than 5 seconds
+    // remove events older than 10 seconds (5 MINUTES LATER ON)
     .map( (list) -> {
       ArrayList<GpsEvent> newList = new ArrayList<GpsEvent>();
       for ( GpsEvent ev : list ) {
-        if ( cTime.sample() - ev.timeAdded < 5 ) {
+        if ( (cTime.sample() - ev.timeAdded) < 10000 ) {
           newList.add(ev);
         }
       }
       return newList;
     });
 
-    // cell to show the names of events currently in list
-    Cell<String> names = allEvents.map( (list) -> {
-      String nameList = "";
-      for (GpsEvent l: list) {
-        nameList += l.name + " ";
-      }
-      return nameList;
-    });
+    
 
-    // add to display
-    SLabel label = new SLabel(names);
-    this.add(label);
+    // loop() in peridioc can only run in a Transaction 
+    Transaction.runVoid(() -> {
+      // create stream that will fire an event every second
+      Stream<Long> sTimer = myGUI.periodic(sys, 1000);
+
+      // create sliding window that contains the events from the last 10 seconds (5 MINUTES LATER ON)
+      Stream<ArrayList<GpsEvent>> sSlidingWindow = sTimer.snapshot( allEvents, (t, list) -> {
+        ArrayList<GpsEvent> newList = new ArrayList<GpsEvent>();
+        for ( GpsEvent ev : list ) {
+          if ( (cTime.sample() - ev.timeAdded) < 10000 ) {
+            newList.add(ev);
+          }
+        }
+        return newList;
+      });
+
+      // cell to show the summed up latitude of events currently in sliding window
+      Cell<String> latitudes = sSlidingWindow.map( (list) -> {
+        Double latSum = 0.0;
+        for (GpsEvent l: list) {
+          latSum += l.latitude;
+        }
+        return String.valueOf(latSum);
+      }).hold("");
+
+      // add to display
+      SLabel label = new SLabel(latitudes);
+      this.add(label);
+    });    
   }
 }

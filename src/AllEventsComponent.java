@@ -19,7 +19,7 @@ public class AllEventsComponent extends JPanel {
     this.setLayout(new GridBagLayout());
 
     // set up Sodium FRP timer system and cell to hold the current time
-    TimerSystem sys = new MillisecondsTimerSystem();
+    MillisecondsTimerSystem sys = new MillisecondsTimerSystem();
     Cell<Long> cTime = sys.time;
 
     // merge streams

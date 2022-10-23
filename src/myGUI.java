@@ -43,11 +43,6 @@ public class myGUI extends JFrame {
     tabbedPane.addTab( "Distance travelled within Range", new DistanceTravelledComponent() );
   }
 
-  /** Displays the distance travelled over the last 5 minutes for each tracker within the latitude/longitude range. */
-  public class DistanceTravelledComponent extends JPanel {
-    //
-  }
-
   /**
    * Returns a stream that fires an event at specified intervals.
    * 

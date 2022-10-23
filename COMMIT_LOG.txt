@@ -1,3 +1,8 @@
+\\---------------- Commit #26 on 23/10/2022 ------------------------------------------------//
+Created new class file for the fourth display. Began trying things out.
+
+
+
 \\---------------- Commit #25 on 23/10/2022 ------------------------------------------------//
 Finished testing the EventsWithinRangeComponent. The test checks:
     events within range get set

@@ -18,6 +18,7 @@ public class EventsWithinRangeComponent extends JPanel {
    * Constructs the third required display. 
    * 
    * @param  streams   An array of GpsEvent streams that will be merged and their events displayed.
+   * @param  sTest     A Unit StreamSink used for testing the component.
    */
   public EventsWithinRangeComponent(Stream<GpsEvent>[] streams, StreamSink<Unit> sTest) {
     // configure main panel

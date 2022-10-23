@@ -1,7 +1,6 @@
 import static org.junit.Assert.*;
 import org.junit.*;
 import nz.sodium.*;
-import swidgets.*;
 
 /** Tests the ControlPanelComponent. */
 public class ControlPanel_Test {

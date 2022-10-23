@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import nz.sodium.*;
 import swidgets.*;
-import java.util.*;
 
 /** 
  * Control panel consisting of a latitude input field, latitude input field,
@@ -52,7 +51,11 @@ public class ControlPanelComponent extends JPanel {
     return (min >= -180.0 && min <= 180.0 && max >= -180.0 && max <= 180.0);
   }
 
-  /** Constructs the control panel. */
+  /**
+   * Constructs the control panel.
+   * 
+   * @param sTest   A Unit StreamSink used for testing the component.
+   */
   public ControlPanelComponent(StreamSink<Unit> sTest) {
     // configure main panel
     this.setLayout(new GridBagLayout());

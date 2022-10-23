@@ -2,6 +2,9 @@ import java.io.*;
 import java.util.*;
 import nz.sodium.*;
 
+// supress warnings from converting the linked list of streams to an array
+@SuppressWarnings("unchecked")
+
 /**
  * Simulates live GPS data by playing back records from the Geolife data set.
  * @author Ian Knight

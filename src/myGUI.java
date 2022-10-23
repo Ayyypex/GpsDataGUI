@@ -50,13 +50,13 @@ public class myGUI extends JFrame {
    * @param period  The specified interval that the stream will fire.
    * @return        A timer in the form of a stream that will repeatedly fire periodically.
    */
-  public static Stream<Long> periodic(TimerSystem sys, long period) {
-    Cell<Long> time = sys.time;
-    CellLoop<Optional<Long>> oAlarm = new CellLoop<>();
-    Stream<Long> sAlarm = sys.at(oAlarm);
+  public static Stream<Double> periodic(SecondsTimerSystem sys, Double period) {
+    Cell<Double> time = sys.time;
+    CellLoop<Optional<Double>> oAlarm = new CellLoop<>();
+    Stream<Double> sAlarm = sys.at(oAlarm);
     oAlarm.loop(
-      sAlarm.map(t -> Optional.of(t + period))
-        .hold(Optional.<Long>of(time.sample() + period)));
+      sAlarm.map( (Double t) -> Optional.of(t + period) )
+        .hold(Optional.<Double>of(time.sample() + period)));
     return sAlarm;
   }
 

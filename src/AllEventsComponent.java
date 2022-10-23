@@ -19,15 +19,15 @@ public class AllEventsComponent extends JPanel {
     this.setLayout(new GridBagLayout());
 
     // set up Sodium FRP timer system and cell to hold the current time
-    MillisecondsTimerSystem sys = new MillisecondsTimerSystem();
-    Cell<Long> cTime = sys.time;
+    SecondsTimerSystem sys = new SecondsTimerSystem();
+    Cell<Double> cTime = sys.time;
 
     // merge streams
     Stream<GpsEvent> sAll = myGUI.mergeStreams(streams);
 
     // record system time of last event occurrence
-    Cell<Long> cLastEventTime = sAll.map( (GpsEvent ev) -> cTime.sample() )
-      .hold(Long.valueOf(0));
+    Cell<Double> cLastEventTime = sAll.map( (GpsEvent ev) -> cTime.sample() )
+      .hold(0.0);
 
     // create and configure event panel that info will be displayed in
     JPanel eventPanel = new JPanel();
@@ -38,15 +38,15 @@ public class AllEventsComponent extends JPanel {
     // loop() in peridioc can only run in a Transaction 
     Transaction.runVoid(() -> {
       // create stream that will fire an event every 0.1 seconds
-      Stream<Long> sTimer = myGUI.periodic(sys, 100);
+      Stream<Double> sTimer = myGUI.periodic(sys, 0.1);
 
       // set CellLoop for eventString to prevent repeatedly firing an empty string
       cEventString = new CellLoop<>();
 
       // fire empty string if > 3 seconds since last event and eventString isn't empty
-      Stream<String> sClear = sTimer.filter( (Long t) -> 
-        ((cTime.sample() - cLastEventTime.sample()) > 3000) && (cEventString.sample() != "") )
-          .map((Long t) -> "");
+      Stream<String> sClear = sTimer.filter( (Double t) -> 
+        ((cTime.sample() - cLastEventTime.sample()) > 3) && (cEventString.sample() != "") )
+          .map((Double t) -> "");
 
       // set up cell to hold the event as a string
       cEventString.loop(

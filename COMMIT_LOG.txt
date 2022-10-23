@@ -1,3 +1,11 @@
+\\---------------- Commit #29 on 23/10/2022 ------------------------------------------------//
+Ignored warnings of code I copied from GpsService, and converted all TimerSystems to 
+SecondsTimerSystem because it is easier to work with seconds than milliseconds at the scale 
+we are using time in. Also made sure the type of the parameters of every lambda function are
+written so it is easier to see what they are. 
+
+
+
 \\---------------- Commit #28 on 23/10/2022 ------------------------------------------------//
 Implemented the sliding window in the form of a stream.
 

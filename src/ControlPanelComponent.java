@@ -67,7 +67,7 @@ public class ControlPanelComponent extends JPanel {
     // loop() needs to be run in explicit Transaction
     Transaction.runVoid(() -> {
       // define business rule
-      Rule validInputRule = new Rule( (lat1, lat2, lon1, lon2) -> 
+      Rule validInputRule = new Rule( (String lat1, String lat2, String lon1, String lon2) -> 
         checkCoord(lat1, lat2, "lat") && checkCoord(lon1, lon2, "lon") );
 
       // create CellLoop so the apply button also clears the text fields
@@ -84,7 +84,7 @@ public class ControlPanelComponent extends JPanel {
       }
 
       // set up stream that will fire an empty string upon the button click
-      Stream<String> sClear = sClicked.map(u -> "");
+      Stream<String> sClear = sClicked.map((Unit u) -> "");
 
       // set up STextFields
       latMin = new STextField(sClear, "");
@@ -97,13 +97,13 @@ public class ControlPanelComponent extends JPanel {
         validInputRule.reify(latMin.text, latMax.text, lonMin.text, lonMax.text) );
       
       // set up cells to hold the lat/lon values upon the click of the button
-      cLatMin = sClicked.snapshot(latMin.text, (u, lat1) -> lat1)
+      cLatMin = sClicked.snapshot(latMin.text, (Unit u, String lat1) -> lat1)
         .hold("-90.0");
-      cLatMax = sClicked.snapshot(latMax.text, (u, lat2) -> lat2)
+      cLatMax = sClicked.snapshot(latMax.text, (Unit u, String lat2) -> lat2)
         .hold("90.0");
-      cLonMin = sClicked.snapshot(lonMin.text, (u, lon1) -> lon1)
+      cLonMin = sClicked.snapshot(lonMin.text, (Unit u, String lon1) -> lon1)
         .hold("-180.0");
-      cLonMax = sClicked.snapshot(lonMax.text, (u, lon2) -> lon2)
+      cLonMax = sClicked.snapshot(lonMax.text, (Unit u, String lon2) -> lon2)
         .hold("180.0");
 
       // set up Slabels to display the current restrictions

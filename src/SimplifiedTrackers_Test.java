@@ -3,6 +3,9 @@ import org.junit.*;
 import nz.sodium.*;
 import java.util.*;
 
+// supress warnings from converting the linked list of streams to an array
+@SuppressWarnings("unchecked")
+
 /** Tests the SimplifiedTrackersComponent. */
 public class SimplifiedTrackers_Test {
   @Test

@@ -1,3 +1,10 @@
+\\---------------- Commit #27 on 23/10/2022 ------------------------------------------------//
+Added field to GpsEvent to hold the time it was added to the DistanceTravelledComponent. 
+Created the Sodium logic to remove events older than 5 seconds from the accumulating cell
+list. 
+
+
+
 \\---------------- Commit #26 on 23/10/2022 ------------------------------------------------//
 Created new class file for the fourth display. Began trying things out.
 

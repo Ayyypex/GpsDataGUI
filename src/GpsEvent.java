@@ -5,6 +5,7 @@ public class GpsEvent {
   public double latitude;     // The Latitude of the GPS event as a value from -90.0 to +90.0
   public double longitude;    // The Longitude of the GPS event as a value from -180.0 to +180.0
   public double altitude;     // The Altitude of the GPS event in feet
+  public double timeAdded;
 
   /** Creates a GpsEvent. */
   public GpsEvent(String name, double latitude, double longitude, double altitude){
@@ -12,6 +13,15 @@ public class GpsEvent {
     this.latitude = latitude;
     this.longitude = longitude;
     this.altitude = altitude;
+  }
+
+  /**
+   * Sets the time field for the event.
+   * 
+   * @param time  The time the event was added to the cell list in DistanceTravelledComponent.
+   */
+  public void setTime(double time){
+    this.timeAdded = time;
   }
 
   /** 

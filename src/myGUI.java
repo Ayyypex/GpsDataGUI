@@ -40,7 +40,7 @@ public class myGUI extends JFrame {
     tabbedPane.addTab( "Simplified Trackers", new SimplifiedTrackersComponent(streams) );
     tabbedPane.addTab( "All Events", new AllEventsComponent(streams) );
     tabbedPane.addTab( "Events within Range", new EventsWithinRangeComponent(streams, null) );
-    tabbedPane.addTab( "Distance travelled within Range", new DistanceTravelledComponent() );
+    tabbedPane.addTab( "Distance travelled within Range", new DistanceTravelledComponent(streams) );
   }
 
   /**

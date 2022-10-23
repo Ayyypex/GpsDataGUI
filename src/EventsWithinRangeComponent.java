@@ -3,7 +3,6 @@ import java.awt.*;
 import nz.sodium.*;
 import nz.sodium.time.*;
 import swidgets.*;
-import java.util.*;
 
 /** 
  * Displays all GpsEvents within a latitude and longitude range set by
@@ -13,18 +12,19 @@ public class EventsWithinRangeComponent extends JPanel {
   
   boolean Testing = true;
   public CellLoop<String> cEventString;
+  public ControlPanelComponent controlPanel;
 
   /** 
    * Constructs the third required display. 
    * 
    * @param  streams   An array of GpsEvent streams that will be merged and their events displayed.
    */
-  public EventsWithinRangeComponent(Stream<GpsEvent>[] streams) {
+  public EventsWithinRangeComponent(Stream<GpsEvent>[] streams, StreamSink<Unit> sTest) {
     // configure main panel
     this.setLayout(new GridLayout(1, 2));
 
     // create subpanels
-    ControlPanelComponent controlPanel = new ControlPanelComponent(null);
+    controlPanel = new ControlPanelComponent(sTest);
     JPanel allEventsPanel = new JPanel(new GridBagLayout());
 
     // set up Sodium FRP timer system and cell to hold the current time

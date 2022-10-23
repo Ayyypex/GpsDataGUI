@@ -1,3 +1,19 @@
+\\---------------- Commit #25 on 23/10/2022 ------------------------------------------------//
+Finished testing the EventsWithinRangeComponent. The test checks:
+    events within range get set
+    events outside of range do not get set
+
+Also wrote some documentation for my testing on this component.
+
+
+\\---------------- Commit #24 on 23/10/2022 ------------------------------------------------//
+Finished implementing EventsWithinRangeComponent by using the cells of the ControlPanel to
+filter out events that are not in the range of those cells' values. Updated the ControlPanel
+and its test file to take a Unit StreamSink as a parameter, so we can simulate the button
+click in testing.
+
+
+
 \\---------------- Commit #23 on 22/10/2022 ------------------------------------------------//
 Finished testing the ControlPanelComponent. The tests check:
     valid and invalid latitude inputs

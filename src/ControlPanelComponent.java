@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import nz.sodium.*;
 import swidgets.*;
+import java.util.*;
 
 /** 
  * Control panel consisting of a latitude input field, latitude input field,
@@ -13,6 +14,10 @@ public class ControlPanelComponent extends JPanel {
   public Cell<String> cLatMax;
   public Cell<String> cLonMin;
   public Cell<String> cLonMax;
+  public STextField latMin;
+  public STextField latMax;
+  public STextField lonMin;
+  public STextField lonMax;
 
   /**
    * Checks whether a pair of strings are valid coordinates depending on its type.
@@ -48,7 +53,7 @@ public class ControlPanelComponent extends JPanel {
   }
 
   /** Constructs the control panel. */
-  public ControlPanelComponent() {
+  public ControlPanelComponent(StreamSink<Unit> sTest) {
     // configure main panel
     this.setLayout(new GridBagLayout());
     this.setBorder(BorderFactory.createEtchedBorder());
@@ -69,27 +74,33 @@ public class ControlPanelComponent extends JPanel {
       SButton apply = new SButton("Apply", cValidInput);
       apply.setFocusable(false);
 
+      // set up sClicked, we will pass a StreamSink if we wish to test this
+      Stream<Unit> sClicked = apply.sClicked;
+      if ( sTest != null ) {
+        sClicked = sTest;
+      }
+
       // set up stream that will fire an empty string upon the button click
-      Stream<String> sClear = apply.sClicked.map(u -> "");
+      Stream<String> sClear = sClicked.map(u -> "");
 
       // set up STextFields
-      STextField latMin = new STextField(sClear, "");
-      STextField latMax = new STextField(sClear, "");
-      STextField lonMin = new STextField(sClear, "");
-      STextField lonMax = new STextField(sClear, "");
+      latMin = new STextField(sClear, "");
+      latMax = new STextField(sClear, "");
+      lonMin = new STextField(sClear, "");
+      lonMax = new STextField(sClear, "");
 
       // set cell to hold the business rule validity
       cValidInput.loop(
         validInputRule.reify(latMin.text, latMax.text, lonMin.text, lonMax.text) );
       
       // set up cells to hold the lat/lon values upon the click of the button
-      cLatMin = apply.sClicked.snapshot(latMin.text, (u, lat1) -> lat1)
+      cLatMin = sClicked.snapshot(latMin.text, (u, lat1) -> lat1)
         .hold("-90.0");
-      cLatMax = apply.sClicked.snapshot(latMax.text, (u, lat2) -> lat2)
+      cLatMax = sClicked.snapshot(latMax.text, (u, lat2) -> lat2)
         .hold("90.0");
-      cLonMin = apply.sClicked.snapshot(lonMin.text, (u, lon1) -> lon1)
+      cLonMin = sClicked.snapshot(lonMin.text, (u, lon1) -> lon1)
         .hold("-180.0");
-      cLonMax = apply.sClicked.snapshot(lonMax.text, (u, lon2) -> lon2)
+      cLonMax = sClicked.snapshot(lonMax.text, (u, lon2) -> lon2)
         .hold("180.0");
 
       // set up Slabels to display the current restrictions

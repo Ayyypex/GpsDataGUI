@@ -7,8 +7,7 @@ import swidgets.*;
 /** Displays all GpsEvents passed to the GUI at the time they occur. */
 public class AllEventsComponent extends JPanel {
 
-  boolean Testing = true;
-  public Cell<String> cEvent;
+  public CellLoop<String> cEventString;
 
   /** 
    * Constructs the second required display. 
@@ -41,8 +40,8 @@ public class AllEventsComponent extends JPanel {
       // create stream that will fire an event every 0.1 seconds
       Stream<Long> sTimer = myGUI.periodic(sys, 100);
 
-      // create CellLoop for eventString to prevent repeatedly firing an empty string
-      CellLoop<String> cEventString = new CellLoop<>();
+      // set CellLoop for eventString to prevent repeatedly firing an empty string
+      cEventString = new CellLoop<>();
 
       // fire empty string if > 3 seconds since last event and eventString isn't empty
       Stream<String> sClear = sTimer.filter( (Long t) -> 
@@ -50,15 +49,10 @@ public class AllEventsComponent extends JPanel {
           .map((Long t) -> "");
 
       // set up cell to hold the event as a string
-      cEventString.loop( 
+      cEventString.loop(
         sAll.map( (GpsEvent ev) -> ev.toString() )
           .orElse(sClear)
             .hold("") );
-
-      // set testing cell
-      if (Testing) {
-        cEvent = cEventString;
-      }
 
       // create SLabel and add to panel
       SLabel eventStringLabel = new SLabel(cEventString);

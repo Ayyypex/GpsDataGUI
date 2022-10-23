@@ -85,55 +85,47 @@ public class ControlPanel_Test {
 
   @Test
   public void applyRestrictions_test() {
-    // We are testing that the cells are updated correctly and that
-    // the text fields are cleared too. We will assume the input that
-    // we send is valid.
-
     // stream sink that we will use to simulate the button click
     StreamSink<Unit> sClicked = new StreamSink<Unit>();
 
-    // set up stream that will fire an empty string upon the simulated button click
-    Stream<String> sClear = sClicked.map(u -> "");
+    // create instance of control panel
+    ControlPanelComponent ctrlPnl = new ControlPanelComponent(sClicked);
 
-    // set up STextFields
-    STextField latMin = new STextField(sClear, "0");
-    STextField latMax = new STextField(sClear, "45");
-    STextField lonMin = new STextField(sClear, "60");
-    STextField lonMax = new STextField(sClear, "120");
-    
-    // set up cells to hold the lat/lon values
-    Cell<String> cLatMin = sClicked.snapshot(latMin.text, (u, lat1) -> lat1)
-      .hold("-90.0");
-    Cell<String> cLatMax = sClicked.snapshot(latMax.text, (u, lat2) -> lat2)
-      .hold("90.0");
-    Cell<String> cLonMin = sClicked.snapshot(lonMin.text, (u, lon1) -> lon1)
-      .hold("-180.0");
-    Cell<String> cLonMax = sClicked.snapshot(lonMax.text, (u, lon2) -> lon2)
-      .hold("180.0");
+    // init test values
+    String latMinVal = "0";
+    String latMaxVal = "45";
+    String lonMinVal = "60";
+    String lonMaxVal = "120";
+
+    // set values of text fields
+    ctrlPnl.latMin.setText(latMinVal);
+    ctrlPnl.latMax.setText(latMaxVal);
+    ctrlPnl.lonMin.setText(lonMinVal);
+    ctrlPnl.lonMax.setText(lonMaxVal);
 
     // check initial values are set correctly
-    assertEquals("-90.0", cLatMin.sample());
-    assertEquals("90.0", cLatMax.sample());
-    assertEquals("-180.0", cLonMin.sample());
-    assertEquals("180.0", cLonMax.sample());
-    assertEquals("0", latMin.text.sample());
-    assertEquals("45", latMax.text.sample());
-    assertEquals("60", lonMin.text.sample());
-    assertEquals("120", lonMax.text.sample());
+    assertEquals("-90.0", ctrlPnl.cLatMin.sample());
+    assertEquals("90.0", ctrlPnl.cLatMax.sample());
+    assertEquals("-180.0", ctrlPnl.cLonMin.sample());
+    assertEquals("180.0", ctrlPnl.cLonMax.sample());
+    assertEquals(latMinVal, ctrlPnl.latMin.text.sample());
+    assertEquals(latMaxVal, ctrlPnl.latMax.text.sample());
+    assertEquals(lonMinVal, ctrlPnl.lonMin.text.sample());
+    assertEquals(lonMaxVal, ctrlPnl.lonMax.text.sample());
 
     // simulate click of the button
     sClicked.send(Unit.UNIT);
 
     // check that cells are set to values from text field
-    assertEquals("0", cLatMin.sample());
-    assertEquals("45", cLatMax.sample());
-    assertEquals("60", cLonMin.sample());
-    assertEquals("120", cLonMax.sample());
+    assertEquals(latMinVal, ctrlPnl.cLatMin.sample());
+    assertEquals(latMaxVal, ctrlPnl.cLatMax.sample());
+    assertEquals(lonMinVal, ctrlPnl.cLonMin.sample());
+    assertEquals(lonMaxVal, ctrlPnl.cLonMax.sample());
 
     // check that text fields are now cleared
-    assertEquals("", latMin.text.sample());
-    assertEquals("", latMax.text.sample());
-    assertEquals("", lonMin.text.sample());
-    assertEquals("", lonMax.text.sample());
+    assertEquals("", ctrlPnl.latMin.text.sample());
+    assertEquals("", ctrlPnl.latMax.text.sample());
+    assertEquals("", ctrlPnl.lonMin.text.sample());
+    assertEquals("", ctrlPnl.lonMax.text.sample());
   }
 }

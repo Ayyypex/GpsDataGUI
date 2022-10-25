@@ -33,14 +33,17 @@ public class myGUI extends JFrame {
     // get the tracker's event streams
     GpsService serv = new GpsService();
     Stream<GpsEvent>[] streams = serv.getEventStreams();
+
+    // create control panel for the last two displays
+    ControlPanelComponent ctrlPnl = new ControlPanelComponent(null);
     
     // add components to gui
     JTabbedPane tabbedPane = new JTabbedPane();
     this.add(tabbedPane);
     tabbedPane.addTab( "Simplified Trackers", new SimplifiedTrackersComponent(streams) );
     tabbedPane.addTab( "All Events", new AllEventsComponent(streams) );
-    tabbedPane.addTab( "Events within Range", new EventsWithinRangeComponent(streams, null) );
-    tabbedPane.addTab( "Distance travelled within Range", new DistanceTravelledComponent(streams) );
+    tabbedPane.addTab( "Events within Range", new EventsWithinRangeComponent(streams, ctrlPnl, null) );
+    tabbedPane.addTab( "Distance Travelled within Range", new DistanceTravelledComponent(streams, ctrlPnl) );
   }
 
   /**

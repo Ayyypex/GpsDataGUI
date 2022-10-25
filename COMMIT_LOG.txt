@@ -1,3 +1,8 @@
+\\---------------- Commit #33 on 25/10/2022 ------------------------------------------------//
+Updated classes so that the control panel can be passed as a parameter in the constructors.
+
+
+
 \\---------------- Commit #32 on 25/10/2022 ------------------------------------------------//
 The component now displays a panel for each tracker containing the tracker's number, and the
 distance travelled in the last 10 seconds (will update to 5 minutes later). Also updated the

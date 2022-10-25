@@ -15,7 +15,7 @@ public class DistanceTravelledComponent extends JPanel {
     Stream<GpsEvent>[] streams = serv.getEventStreams();
 
     JFrame frame = new JFrame();
-    frame.add( new DistanceTravelledComponent(streams) );
+    frame.add( new DistanceTravelledComponent(streams, null) );
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLocationRelativeTo(null);        // place gui window at center of screen
     frame.setSize( new Dimension(700, 400) );
@@ -121,7 +121,7 @@ public class DistanceTravelledComponent extends JPanel {
    * @param  streams   An array of GpsEvent streams that will be used to calculate
    *                   the distance travelled in the last 5 minutes.
    */
-  public DistanceTravelledComponent(Stream<GpsEvent>[] streams) {
+  public DistanceTravelledComponent(Stream<GpsEvent>[] streams, ControlPanelComponent ctrlPnl) {
     // configure main panel
     this.setLayout(new GridBagLayout());
     this.setLayout(new GridLayout(1,2));
@@ -131,7 +131,11 @@ public class DistanceTravelledComponent extends JPanel {
     Cell<Double> cTime = sys.time;
 
     // add control panel to main panel
-    this.add(new ControlPanelComponent(null));
+    if ( ctrlPnl == null ) {
+      this.add(new ControlPanelComponent(null));
+    } else {
+      this.add(ctrlPnl);
+    }
     
 
     JPanel allTrackersPanel = new JPanel(new GridLayout(5, 2, 10, 10));

@@ -20,14 +20,20 @@ public class EventsWithinRangeComponent extends JPanel {
    * @param  streams   An array of GpsEvent streams that will be merged and their events displayed.
    * @param  sTest     A Unit StreamSink used for testing the component.
    */
-  public EventsWithinRangeComponent(Stream<GpsEvent>[] streams, StreamSink<Unit> sTest) {
+  public EventsWithinRangeComponent(Stream<GpsEvent>[] streams, ControlPanelComponent ctrlPnl, StreamSink<Unit> sTest) {
     // configure main panel
     this.setLayout(new GridLayout(1, 2));
 
-    // create subpanels
-    controlPanel = new ControlPanelComponent(sTest);
-    JPanel allEventsPanel = new JPanel(new GridBagLayout());
+    // set control panel
+    if ( ctrlPnl == null ) {
+      controlPanel = new ControlPanelComponent(sTest);
+    } else {
+      controlPanel = ctrlPnl;
+    }
 
+    // create subpanel
+    JPanel allEventsPanel = new JPanel(new GridBagLayout());
+    
     // set up Sodium FRP timer system and cell to hold the current time
     SecondsTimerSystem sys = new SecondsTimerSystem();
     Cell<Double> cTime = sys.time;

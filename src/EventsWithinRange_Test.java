@@ -26,7 +26,7 @@ public class EventsWithinRange_Test {
     StreamSink<Unit> sClicked = new StreamSink<Unit>();
 
     // create instance of the component
-    EventsWithinRangeComponent display = new EventsWithinRangeComponent(streamsArray, sClicked);
+    EventsWithinRangeComponent display = new EventsWithinRangeComponent(streamsArray, null, sClicked);
     ControlPanelComponent ctrlPnl = display.controlPanel;
 
     // create events

@@ -1,3 +1,17 @@
+\\---------------- Commit #31 on 25/10/2022 ------------------------------------------------//
+Converted altitude into meters before using it in the haversine function. Implemented 
+alternative distance function that converts a given latitude, longitude, and altitude to a
+set of ECEF coordinates in the form of X,Y,Z. The standard Euclidean distance formula can 
+thus be applied to it.
+
+
+
+\\---------------- Commit #30 on 25/10/2022 ------------------------------------------------//
+Implemented haversine distance function and updated the cell to now hold the distance 
+travelled between the events in the sliding window.
+
+
+
 \\---------------- Commit #29 on 23/10/2022 ------------------------------------------------//
 Ignored warnings of code I copied from GpsService, and converted all TimerSystems to 
 SecondsTimerSystem because it is easier to work with seconds than milliseconds at the scale 

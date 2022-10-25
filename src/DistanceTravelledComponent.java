@@ -26,7 +26,8 @@ public class DistanceTravelledComponent extends JPanel {
    * Calculates the distance between two positions by first calculating their haversine
    * distance, before using Pythagoras to account for the altitude. The hypotenuse of 
    * the triangle will be the final distance, while the 'horizontal' side will be the 
-   * haversine distance, and the 'vertical' side is the altitude difference.
+   * haversine distance, and the 'vertical' side is the altitude difference. The positions
+   * are assumed to be in signed degrees format.
    * 
    *        /|
    *       / |
@@ -64,14 +65,82 @@ public class DistanceTravelledComponent extends JPanel {
     Double b = Math.asin(Math.sqrt(a));
 
     // radius of the sphere (Earth in this case)
-    Double r = 6371.0 * 1000 ; // metres
+    Double r = 6371.0 * 1000 ; // meters
 
     // final haversine distance
     Double hDist = 2*r*b;
 
+    // convert altitude from feet to meters
+    Double feetPerMeter = 3.281;
+    alt1 = alt1 / feetPerMeter;
+    alt2 = alt2 / feetPerMeter;
+
     // calculate final distance with altitude via pythagoras
     Double sqrSum = Math.pow(hDist, 2) + Math.pow(alt2-alt1, 2);
     return Math.sqrt(sqrSum);
+  }
+
+  /**
+   * Calculates the distance between two positions by converting the geodetic data
+   * to ECEF coordinates, which is a cartesian spatial reference system for Earth. 
+   * The positions are assumed to be in signed degrees format.
+   * 
+   * @param lat1  The latitude of the first position.
+   * @param lon1  The longitude of the first position.
+   * @param alt1  The altitude of the first position in feet.
+   * @param lat2  The latitude of the second position.
+   * @param lon2  The longitude of the second position.
+   * @param alt2  The altitude of the second position in feet.
+   * @return      The distance between the two positions.
+   */
+  public static Double calcEuclidean(Double lat1, Double lon1, Double alt1,
+    Double lat2, Double lon2, Double alt2 ) 
+  {
+    // convert to X, Y, Z format
+    Double[] pt1 = convertToECEF(lat1, lon1, alt1);
+    Double[] pt2 = convertToECEF(lat2, lon2, alt2);
+
+    // calculate differences between points
+    Double diffX = pt2[0] - pt1[0];
+    Double diffY = pt2[1] - pt1[1];
+    Double diffZ = pt2[2] - pt1[2];
+
+    // calculate distance between points
+    Double sqrSum = Math.pow(diffX, 2) + Math.pow(diffY, 2) + Math.pow(diffZ, 2);
+    return Math.sqrt(sqrSum);
+  }
+
+  //https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#From_geodetic_to_ECEF_coordinates
+  /**
+   * 
+   * @param lat  The latitude of the position in signed degrees format. 
+   * @param lon  The longitude of the position in signed degrees format. 
+   * @param alt  The altitude of the position in feet.
+   * @return
+   */
+  public static Double[] convertToECEF(Double lat, Double lon, Double alt) {
+    // convert degrees to radians, and altitude to meters
+    lat = Math.toRadians(lat);
+    lon = Math.toRadians(lon);
+    Double h = alt / 3.281;
+
+    // define Earth's equatorial radius (semi-major axis), and polar radius (semi-minor axis)
+    // source: https://en.wikipedia.org/wiki/Earth_radius
+    Double a = 6378.1370 * 1000; // meters
+    Double b = 6356.7523 * 1000;
+
+    // define e squared, the ' square of the first numerical eccentricity of the ellipsoid'
+    Double eSqrd = 1 - (Math.pow(b, 2) / Math.pow(a, 2));
+
+    // define N, the prime vertical radius of curvature
+    Double N = a / (Math.sqrt( 1 - eSqrd * Math.pow(Math.sin(lat), 2) ));
+
+    // convert to ECEF's X, Y, Z  format
+    Double X = (N + h) * Math.cos(lat) * Math.cos(lon);
+    Double Y = (N + h) * Math.cos(lat) * Math.sin(lon);
+    Double Z = ((Math.pow(b, 2) / Math.pow(a, 2)) * N + h) * Math.sin(lat);
+
+    return new Double[] { X, Y, Z };
   }
 
   /**
@@ -94,7 +163,7 @@ public class DistanceTravelledComponent extends JPanel {
       GpsEvent ev2 = events.get(i+1);
 
       // sum up distance
-      travelledDist += calcHaversine(ev1.latitude, ev1.longitude, ev1.altitude, 
+      travelledDist += calcEuclidean(ev1.latitude, ev1.longitude, ev1.altitude, 
         ev2.latitude, ev2.longitude, ev2.altitude);
     }
     

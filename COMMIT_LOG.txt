@@ -1,3 +1,8 @@
+\\---------------- Commit #35 on 25/10/2022 ------------------------------------------------//
+Updated SimplifiedTrackers_Test to reflect my changes to the code.
+
+
+
 \\---------------- Commit #34 on 25/10/2022 ------------------------------------------------//
 Started a soft reboot of my code to improve on the GUI and testing capabilities. Created a 
 table that now displays the information previous used in the SimplifiedTrackersComponent.  

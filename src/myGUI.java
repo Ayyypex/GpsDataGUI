@@ -41,7 +41,6 @@ public class myGUI extends JFrame {
     JLabel trackerLatHeader = new JLabel("Latitude");
     JLabel trackerLonHeader = new JLabel("Longitude");
     JLabel trackerDistDeader = new JLabel("Distance Travelled (meters)");
-
     
     // configure header labels
     trackerNumHeader.setHorizontalAlignment(SwingConstants.CENTER);
@@ -50,7 +49,7 @@ public class myGUI extends JFrame {
     trackerDistDeader.setHorizontalAlignment(SwingConstants.CENTER);
 
     // define insets to be used throughout table
-    Insets tableRowInsets = new Insets(10, 50, 10, 50);
+    Insets tableRowInsets = new Insets(10, 70, 10, 70);
     Insets seperatorInsets = new Insets(2, 0, 2, 0);
 
     // add table headers
@@ -111,6 +110,16 @@ public class myGUI extends JFrame {
       JSeparator rowSep = new JSeparator(SwingConstants.HORIZONTAL);
       addComponent( trackersTablePanel, rowSep, rowIndex-1, 0, 5, 1, seperatorInsets );
       rowIndex+=2;
+
+      // add two seperators at bottom of table
+      if ( i == streams.length-1 ) {
+        rowSep = new JSeparator(SwingConstants.HORIZONTAL);
+        addComponent( trackersTablePanel, rowSep, rowIndex, 0, 5, 1, seperatorInsets );
+        rowSep = new JSeparator(SwingConstants.HORIZONTAL);
+        rowSep.setForeground(Color.black);
+        rowSep.setBackground(Color.black);
+        addComponent( trackersTablePanel, rowSep, rowIndex+1, 0, 5, 1, seperatorInsets );
+      }
     }
 
     // add to frame
@@ -154,7 +163,7 @@ public class myGUI extends JFrame {
    * @param sGpsEvents
    * @return
    */
-  public static Cell<String>[] getSimplifiedGpsCells( Stream<GpsEvent> sGpsEvents) {
+  public static Cell<String>[] getSimplifiedGpsCells(Stream<GpsEvent> sGpsEvents) {
     // set up cell to hold the stripped stream's SimpleGpsEvent
     Cell<SimpleGpsEvent> cEvent = stripAltitude(sGpsEvents)
       .hold( new SimpleGpsEvent() );

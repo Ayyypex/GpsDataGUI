@@ -23,10 +23,10 @@ public class AllEventsComponent extends JPanel {
     Cell<Double> cTime = sys.time;
 
     // merge streams
-    Stream<GpsEvent> sAll = myGUI.mergeStreams(streams);
+    Stream<GpsEvent> sAllGpsEvents = myGUI.mergeStreams(streams);
 
     // record system time of last event occurrence
-    Cell<Double> cLastEventTime = sAll.map( (GpsEvent ev) -> cTime.sample() )
+    Cell<Double> cLastEventTime = sAllGpsEvents.map( (GpsEvent ev) -> cTime.sample() )
       .hold(0.0);
 
     // create and configure event panel that info will be displayed in
@@ -50,7 +50,7 @@ public class AllEventsComponent extends JPanel {
 
       // set up cell to hold the event as a string
       cEventString.loop(
-        sAll.map( (GpsEvent ev) -> ev.toString() )
+        sAllGpsEvents.map( (GpsEvent ev) -> ev.toString() )
           .orElse(sClear)
             .hold("") );
 

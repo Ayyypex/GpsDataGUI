@@ -1,3 +1,10 @@
+\\---------------- Commit #32 on 25/10/2022 ------------------------------------------------//
+The component now displays a panel for each tracker containing the tracker's number, and the
+distance travelled in the last 10 seconds (will update to 5 minutes later). Also updated the
+fonts.
+
+
+
 \\---------------- Commit #31 on 25/10/2022 ------------------------------------------------//
 Converted altitude into meters before using it in the haversine function. Implemented 
 alternative distance function that converts a given latitude, longitude, and altitude to a

@@ -28,7 +28,7 @@ public class myGUI extends JFrame {
     Border blackline = BorderFactory.createLineBorder(Color.black, 5);
     this.getRootPane().setBorder(blackline);
     this.setBackground(Color.gray);
-    this.setSize(1200, 700);
+    this.setSize(1600, 900);
     
     // get the tracker's event streams
     GpsService serv = new GpsService();

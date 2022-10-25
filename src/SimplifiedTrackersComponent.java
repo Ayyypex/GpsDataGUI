@@ -39,7 +39,7 @@ public class SimplifiedTrackersComponent extends JPanel {
 
     // create and add each tracker display
     for ( int i=0; i<streams.length; i++ ) {
-      Stream<GpsEvent> s = streams[i];
+      Stream<GpsEvent> sGpsEvents = streams[i];
 
       // create and configure display panel
       JPanel trackerPanel = new JPanel(new GridLayout(2, 3, 0, 5));
@@ -47,7 +47,7 @@ public class SimplifiedTrackersComponent extends JPanel {
       trackerPanel.setBorder(BorderFactory.createEtchedBorder());
 
       // set up cell to hold the stripped stream's SimpleGpsEvent
-      Cell<SimpleGpsEvent> cEvent = stripAltitude(s)
+      Cell<SimpleGpsEvent> cEvent = stripAltitude(sGpsEvents)
         .hold( new SimpleGpsEvent() );
 
       // set up cells to hold each field
@@ -65,15 +65,19 @@ public class SimplifiedTrackersComponent extends JPanel {
       // create SLabels
       SLabel trackerNumLabel = new SLabel(cTrackerNumber);
       SLabel trackerLatLabel = new SLabel(cTrackerLatitude);
-      SLabel trackerLongLabel = new SLabel(cTrackerLongitude);
+      SLabel trackerLonLabel = new SLabel(cTrackerLongitude);
 
       // configure SLabels
+      Font value = new Font("Courier", Font.PLAIN, 14);
       trackerNumLabel.setHorizontalAlignment(SwingConstants.CENTER);
       trackerNumLabel.setVerticalAlignment(SwingConstants.TOP);
+      trackerNumLabel.setFont(value);
       trackerLatLabel.setHorizontalAlignment(SwingConstants.CENTER);
       trackerLatLabel.setVerticalAlignment(SwingConstants.TOP);
-      trackerLongLabel.setHorizontalAlignment(SwingConstants.CENTER);
-      trackerLongLabel.setVerticalAlignment(SwingConstants.TOP);
+      trackerLatLabel.setFont(value);
+      trackerLonLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      trackerLonLabel.setVerticalAlignment(SwingConstants.TOP);
+      trackerLonLabel.setFont(value);
 
       // create header labels
       JLabel trackerNumHeader = new JLabel("Tracker Number:");
@@ -98,7 +102,7 @@ public class SimplifiedTrackersComponent extends JPanel {
       trackerPanel.add(trackerLonHeader);
       trackerPanel.add(trackerNumLabel);
       trackerPanel.add(trackerLatLabel);
-      trackerPanel.add(trackerLongLabel);
+      trackerPanel.add(trackerLonLabel);
 
       // add to main panel
       this.add(trackerPanel);

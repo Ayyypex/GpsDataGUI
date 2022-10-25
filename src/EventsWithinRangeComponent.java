@@ -33,7 +33,7 @@ public class EventsWithinRangeComponent extends JPanel {
     Cell<Double> cTime = sys.time;
 
     // merge streams and set up cells to hold the current lat and lon range
-    Stream<GpsEvent> sAll = myGUI.mergeStreams(streams);
+    Stream<GpsEvent> sAllGpsEvents = myGUI.mergeStreams(streams);
     Cell<Double> cLatMin = controlPanel.cLatMin.map( (String latMin) -> Double.parseDouble(latMin) );
     Cell<Double> cLatMax = controlPanel.cLatMax.map( (String latMax) -> Double.parseDouble(latMax) );
     Cell<Double> cLonMin = controlPanel.cLonMin.map( (String lonMin) -> Double.parseDouble(lonMin) );
@@ -54,7 +54,7 @@ public class EventsWithinRangeComponent extends JPanel {
       cEventString = new CellLoop<>();
 
       // filter the merged stream such that it outputs events within specified range
-      Stream<GpsEvent> sEventsInRange = sAll.filter( (GpsEvent ev) -> ev.latitude >= cLatMin.sample() )
+      Stream<GpsEvent> sEventsInRange = sAllGpsEvents.filter( (GpsEvent ev) -> ev.latitude >= cLatMin.sample() )
         .filter( (GpsEvent ev) -> ev.latitude <= cLatMax.sample() )  
           .filter(  (GpsEvent ev) -> ev.longitude >= cLonMin.sample() ) 
             .filter( (GpsEvent ev) -> ev.longitude <= cLonMax.sample() );

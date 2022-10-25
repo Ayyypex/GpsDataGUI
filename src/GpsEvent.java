@@ -15,6 +15,11 @@ public class GpsEvent {
     this.altitude = altitude;
   }
 
+  /** Getter for the tracker number. */
+  public String getTrackerNumber() {
+    return String.valueOf(name.charAt(7));
+  }
+
   /**
    * Sets the time field for the event.
    * 

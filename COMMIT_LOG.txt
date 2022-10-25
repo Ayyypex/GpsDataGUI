@@ -1,3 +1,11 @@
+\\---------------- Commit #34 on 25/10/2022 ------------------------------------------------//
+Started a soft reboot of my code to improve on the GUI and testing capabilities. Created a 
+table that now displays the information previous used in the SimplifiedTrackersComponent.  
+Created a function that returns an array of cells containing the simplified tracking info,
+making it much easier to test. 
+
+
+
 \\---------------- Commit #33 on 25/10/2022 ------------------------------------------------//
 Updated classes so that the control panel can be passed as a parameter in the constructors.
 

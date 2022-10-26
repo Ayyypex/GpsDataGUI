@@ -1,4 +1,12 @@
-\\---------------- Commit #35 on 25/10/2022 ------------------------------------------------//
+\\---------------- Commit #36 on 26/10/2022 ------------------------------------------------//
+Continued the refactoring of my code. My GUI now displays the control panel, the most recent 
+event, and the most recent filtered events using functions that contains the code from the
+AllEventsComponent and EventsWithinRangeComponent respectively. I have kept the control 
+panel as a class file due to how my other code depends on it.
+
+
+
+\\---------------- Commit #35 on 26/10/2022 ------------------------------------------------//
 Updated SimplifiedTrackers_Test to reflect my changes to the code.
 
 

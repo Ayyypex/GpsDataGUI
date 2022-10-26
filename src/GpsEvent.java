@@ -34,7 +34,7 @@ public class GpsEvent {
    * @return a string representation of the value of this object.
    */
   public String toString(){
-    return "NAME:"+this.name+",LAT:"+this.latitude+",LON:"+this.longitude+",ALT:"+this.altitude;
+    return this.getTrackerNumber()+","+this.latitude+","+this.longitude+","+this.altitude;
   }
 
 } 

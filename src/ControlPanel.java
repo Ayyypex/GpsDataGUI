@@ -7,7 +7,7 @@ import swidgets.*;
  * Control panel consisting of a latitude input field, latitude input field,
  * and a button.
  */
-public class ControlPanelComponent extends JPanel {
+public class ControlPanel extends JPanel {
 
   public Cell<String> cLatMin;
   public Cell<String> cLatMax;
@@ -56,7 +56,7 @@ public class ControlPanelComponent extends JPanel {
    * 
    * @param sTest   A Unit StreamSink used for testing the component.
    */
-  public ControlPanelComponent(StreamSink<Unit> sTest) {
+  public ControlPanel(StreamSink<Unit> sTest) {
     // configure main panel
     this.setLayout(new GridBagLayout());
     this.setBorder(BorderFactory.createEtchedBorder());

@@ -1,3 +1,10 @@
+\\---------------- Commit #37 on 26/10/2022 ------------------------------------------------//
+Continued the refactoring of my code. My GUI now displays the distance travelled for events 
+within the last 5 minutes. I have also 'cleaned' up the code and filled out the Javadoc 
+comments for all the new functions.
+
+
+
 \\---------------- Commit #36 on 26/10/2022 ------------------------------------------------//
 Continued the refactoring of my code. My GUI now displays the control panel, the most recent 
 event, and the most recent filtered events using functions that contains the code from the

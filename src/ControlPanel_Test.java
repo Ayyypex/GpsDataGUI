@@ -2,7 +2,7 @@ import static org.junit.Assert.*;
 import org.junit.*;
 import nz.sodium.*;
 
-/** Tests the ControlPanelComponent. */
+/** Tests the ControlPanel class. */
 public class ControlPanel_Test {
   @Test
   public void validLatitudeInput_test() {
@@ -19,7 +19,7 @@ public class ControlPanel_Test {
     // test each input
     for ( int i=0; i < input.length; i++ ) {
       //System.out.println("Output is not as expected: " + i);
-      assertTrue( ControlPanelComponent.checkCoord(input[i][0], input[i][1], "lat") );
+      assertTrue( ControlPanel.checkCoord(input[i][0], input[i][1], "lat") );
     }
   }
 
@@ -39,7 +39,7 @@ public class ControlPanel_Test {
     
     for ( int i=0; i < input.length; i++ ) {
       //System.out.println("Output is not as expected: " + i);
-      assertFalse( ControlPanelComponent.checkCoord(input[i][0], input[i][1], "lat") );
+      assertFalse( ControlPanel.checkCoord(input[i][0], input[i][1], "lat") );
     }
   }
 
@@ -59,7 +59,7 @@ public class ControlPanel_Test {
     
     for ( int i=0; i < input.length; i++ ) {
       //System.out.println("Output is not as expected: " + i);
-      assertTrue( ControlPanelComponent.checkCoord(input[i][0], input[i][1], "long") );
+      assertTrue( ControlPanel.checkCoord(input[i][0], input[i][1], "long") );
     }
   }
 
@@ -78,7 +78,7 @@ public class ControlPanel_Test {
     
     for ( int i=0; i < input.length; i++ ) {
       //System.out.println("Output is not as expected: " + i);
-      assertFalse( ControlPanelComponent.checkCoord(input[i][0], input[i][1], "lon") );
+      assertFalse( ControlPanel.checkCoord(input[i][0], input[i][1], "lon") );
     }
   }
 
@@ -88,7 +88,7 @@ public class ControlPanel_Test {
     StreamSink<Unit> sClicked = new StreamSink<Unit>();
 
     // create instance of control panel
-    ControlPanelComponent ctrlPnl = new ControlPanelComponent(sClicked);
+    ControlPanel ctrlPnl = new ControlPanel(sClicked);
 
     // init test values
     String latMinVal = "0";

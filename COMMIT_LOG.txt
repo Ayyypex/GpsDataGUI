@@ -1,3 +1,8 @@
+\\---------------- Commit #38 on 27/10/2022 ------------------------------------------------//
+Updated tests for the previous AllEventsComponent and EventsWithinRangeComponent classes.
+
+
+
 \\---------------- Commit #37 on 26/10/2022 ------------------------------------------------//
 Continued the refactoring of my code. My GUI now displays the distance travelled for events 
 within the last 5 minutes. I have also 'cleaned' up the code and filled out the Javadoc 

@@ -3,7 +3,7 @@ import org.junit.*;
 import nz.sodium.*;
 
 /** Tests the SimplifiedTrackersComponent. */
-public class SimplifiedTrackers_Test {
+public class simplifiedGps_Test {
   @Test
   public void stripAltitude_test() {
     // set up stream sink that we will send an event to

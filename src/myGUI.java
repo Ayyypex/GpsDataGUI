@@ -27,7 +27,7 @@ public class myGUI extends JFrame {
     // mandatory configuration
     this.setTitle("a1765159's GUI");
     this.setBackground(Color.gray);
-    this.setSize(1200, 900);
+    this.setSize(1300, 940);
 
     // create main panel
     JPanel mainPanel = new JPanel(new GridBagLayout());
@@ -40,9 +40,9 @@ public class myGUI extends JFrame {
     JLabel trackerNumHeader = new JLabel("Tracker Number", SwingConstants.CENTER);
     JLabel trackerLatHeader = new JLabel("Latitude", SwingConstants.CENTER);
     JLabel trackerLonHeader = new JLabel("Longitude", SwingConstants.CENTER);
-    JLabel trackerDistDeader = new JLabel("Distance Travelled (meters)", SwingConstants.CENTER);
+    JLabel trackerDistDeader = new JLabel("Distance Travelled within Range (meters)", SwingConstants.CENTER);
 
-    // define insets and fonts to be used throughout GUI
+    // define insets and font to be used throughout GUI
     Insets columnInsets = new Insets(10, 50, 10, 50);
     Insets minInsets = new Insets(5, 5, 5, 5);
     Font valueFont = new Font("Courier", Font.PLAIN, 14);
@@ -294,7 +294,7 @@ public class myGUI extends JFrame {
       // create CellLoop for eventString so we can check if its empty
       CellLoop<String> cEventString = new CellLoop<>();
 
-      // filter the merged stream such that it outputs events within specified range
+      // filter the merged stream such that it outputs events within restrictions
       Stream<GpsEvent> sFilteredEvents = sAllGpsEvents
         .filter( (GpsEvent ev) -> ev.latitude >= cLatMin.sample() )
         .filter( (GpsEvent ev) -> ev.latitude <= cLatMax.sample() )  
@@ -324,8 +324,8 @@ public class myGUI extends JFrame {
 
   /**
    * Uses Sodium FRP operations on a GpsEvent stream to get a cell that holds the distance
-   * travelled between events within the control panel's current latitude and longitude
-   * restrictions, and within a specified time window.
+   * travelled between events that are within the control panel's current latitude and
+   * longitude restrictions, and within a specified time window.
    * 
    * @param sys         A Sodium FRP SecondsTimerSystem used to create a periodic timer.
    * @param ctrlPnl     The ControlPanel that sets and contains the current restrictions.
@@ -342,7 +342,11 @@ public class myGUI extends JFrame {
       // create cell to hold the timer system's current time
       Cell<Double> cTime = sys.time;
 
-      // CREATE FILTERED STREAM HERE
+      // get the control panel's current latitude and longitude restrictions 
+      Cell<Double> cLatMin = ctrlPnl.cLatMin.map( (String latMin) -> Double.parseDouble(latMin) );
+      Cell<Double> cLatMax = ctrlPnl.cLatMax.map( (String latMax) -> Double.parseDouble(latMax) );
+      Cell<Double> cLonMin = ctrlPnl.cLonMin.map( (String lonMin) -> Double.parseDouble(lonMin) );
+      Cell<Double> cLonMax = ctrlPnl.cLonMax.map( (String lonMax) -> Double.parseDouble(lonMax) ); 
 
       // create cell to accumulate GpsEvents in a list
       Cell<ArrayList<GpsEvent>> cEventList = sGpsEvents.accum(
@@ -353,13 +357,14 @@ public class myGUI extends JFrame {
         }
       )
       // remove events that are older than the specified windowSize 
-      // and/or not within the control panel's restrictions
       .map( (ArrayList<GpsEvent> list) -> {
         ArrayList<GpsEvent> newList = new ArrayList<GpsEvent>();
         for ( GpsEvent ev : list ) {
-          if ( (cTime.sample() - ev.timeAdded) < windowSize ) {
-            newList.add(ev);
+          // event won't be considered from now on
+          if ( (cTime.sample() - ev.timeAdded) > windowSize ) {
+            continue;
           }
+          newList.add(ev);          
         }
         return newList;
       });
@@ -372,11 +377,21 @@ public class myGUI extends JFrame {
       Stream<ArrayList<GpsEvent>> sSlidingWindow = sTimer.snapshot(
         cEventList, (Double t, ArrayList<GpsEvent>list) -> {
           ArrayList<GpsEvent> newList = new ArrayList<GpsEvent>();
+          
+          // check event is within sliding window and restrictions
           for ( GpsEvent ev : list ) {
-            if ( (cTime.sample() - ev.timeAdded) < windowSize ) {
-              newList.add(ev);
+            boolean notWithinWindow = (cTime.sample() - ev.timeAdded) > windowSize;
+            boolean notWithinLatRange = ev.latitude < cLatMin.sample() || ev.latitude > cLatMax.sample();
+            boolean notWithinLonRange = ev.longitude < cLonMin.sample() || ev.longitude > cLonMax.sample();
+
+            // a condition wasn't met, check next event
+            if ( notWithinWindow || notWithinLatRange || notWithinLonRange ) {
+              continue;
             }
+
+            newList.add(ev);          
           }
+
           return newList;
         }
       );

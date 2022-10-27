@@ -71,7 +71,7 @@ public class ControlPanel extends JPanel {
       CellLoop<Boolean> cValidInput = new CellLoop<>();
 
       // create SButton that will only be clickable if business rule is met
-      SButton apply = new SButton("Set Restrictions", cValidInput);
+      SButton apply = new SButton("Set Range", cValidInput);
       apply.setFocusable(false);
 
       // set up sClicked, we will pass a StreamSink if we wish to test this

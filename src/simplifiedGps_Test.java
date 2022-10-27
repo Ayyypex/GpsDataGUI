@@ -6,10 +6,10 @@ import nz.sodium.*;
 public class simplifiedGps_Test {
   @Test
   public void stripAltitude_test() {
-    // set up stream sink that we will send an event to
+    // create stream sink that we will send an event to
     StreamSink<GpsEvent> sGpsEvents = new StreamSink<GpsEvent>();
     
-    // set up stream that will strip the altitude off the GpsEvent stream
+    // create stream that will strip the altitude off the GpsEvent stream
     Stream<SimpleGpsEvent> sSimpleGps = myGUI.stripAltitude(sGpsEvents);
 
     // set up cells to hold each field
@@ -32,7 +32,7 @@ public class simplifiedGps_Test {
 
   @Test
   public void getSimplifiedGpsCells_test() {
-    // set up stream sink that we will send an event to
+    // create stream sink that we will send an event to
     StreamSink<GpsEvent> sGpsEvents = new StreamSink<GpsEvent>();
 
     // get the cells containing simplified tracker info

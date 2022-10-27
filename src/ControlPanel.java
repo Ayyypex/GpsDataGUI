@@ -19,39 +19,6 @@ public class ControlPanel extends JPanel {
   public STextField lonMax;
 
   /**
-   * Checks whether a pair of strings are valid coordinates depending on its type.
-   * 
-   * @param minStr  The string representing the min value in a range.
-   * @param maxStr  The string representing the max value in a range.
-   * @param type    The type of string the input should be. 'lat' or 'lon'
-   * @return        true if input is within it's type's range and minStr <= maxStr.
-   */
-  public static boolean checkCoord(String minStr, String maxStr, String type) {
-    Double min;
-    Double max;
-
-    // try parsing the input as a double, return false if not a double
-    try { 
-      min = Double.parseDouble(minStr); 
-      max = Double.parseDouble(maxStr); 
-    } 
-    catch (NumberFormatException e) { 
-      return false; 
-    }
-    
-    // min can't be bigger than max
-    if ( min > max ) {
-      return false;
-    }
-
-    // return whether coordinates are in range
-    if ( type.equals("lat") ) {
-      return (min >= -90.0 && min <= 90.0 && max >= -90.0 && max <= 90.0);
-    }
-    return (min >= -180.0 && min <= 180.0 && max >= -180.0 && max <= 180.0);
-  }
-
-  /**
    * Constructs the control panel.
    * 
    * @param sTest   A Unit StreamSink used for testing the component.
@@ -168,5 +135,38 @@ public class ControlPanel extends JPanel {
       myGUI.addComponent(this, lonMinLabel, 9, 1, 1, 1, minInsets);
       myGUI.addComponent(this, lonMaxLabel, 9, 2, 1, 1, minInsets);  
     });
+  }
+
+  /**
+   * Checks whether a pair of strings are valid coordinates depending on its type.
+   * 
+   * @param minStr  The string representing the min value in a range.
+   * @param maxStr  The string representing the max value in a range.
+   * @param type    The type of string the input should be. 'lat' or 'lon'
+   * @return        true if input is within it's type's range and minStr <= maxStr.
+   */
+  public static boolean checkCoord(String minStr, String maxStr, String type) {
+    Double min;
+    Double max;
+
+    // try parsing the input as a double, return false if not a double
+    try { 
+      min = Double.parseDouble(minStr); 
+      max = Double.parseDouble(maxStr); 
+    } 
+    catch (NumberFormatException e) { 
+      return false; 
+    }
+    
+    // min can't be bigger than max
+    if ( min > max ) {
+      return false;
+    }
+
+    // return whether coordinates are in range
+    if ( type.equals("lat") ) {
+      return (min >= -90.0 && min <= 90.0 && max >= -90.0 && max <= 90.0);
+    }
+    return (min >= -180.0 && min <= 180.0 && max >= -180.0 && max <= 180.0);
   }
 }

@@ -84,7 +84,7 @@ public class ControlPanel_Test {
 
   @Test
   public void applyRestrictions_test() {
-    // stream sink that we will use to simulate the button click
+    // create stream sink that we will use to simulate the button click
     StreamSink<Unit> sClicked = new StreamSink<Unit>();
 
     // create instance of control panel

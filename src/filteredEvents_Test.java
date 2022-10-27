@@ -10,7 +10,7 @@ import java.util.*;
 /** Tests the functions related to the filteredEvents display. */
 public class filteredEvents_Test {
   @Test
-  public void eventInRange_test() {
+  public void getFilteredEventsCell_test() {
     // set up linked list of GpsEvent StreamSinks and convert it to an array
     LinkedList<Stream<GpsEvent>> streams = new LinkedList<Stream<GpsEvent>>();
     StreamSink<GpsEvent> sGps0 = new StreamSink<GpsEvent>();
@@ -55,6 +55,8 @@ public class filteredEvents_Test {
     ctrlPnl.latMax.setText("45");
     ctrlPnl.lonMin.setText("60");
     ctrlPnl.lonMax.setText("120");
+    // give it time to catch up, otherwise it sometimes won't detect the newly set text
+    try { Thread.sleep(5); } catch (InterruptedException e) {}
     sClicked.send(Unit.UNIT);
 
     // send events and check that the cell updates or doesn't update appropriately

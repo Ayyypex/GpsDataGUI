@@ -2,7 +2,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.*;
 import nz.sodium.*;
 
-/** Tests the SimplifiedTrackersComponent. */
+/** Tests the functions related to the simplified tracker info. */
 public class simplifiedGps_Test {
   @Test
   public void stripAltitude_test() {

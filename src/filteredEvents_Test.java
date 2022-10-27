@@ -7,7 +7,7 @@ import java.util.*;
 // supress warnings from converting the linked list of streams to an array
 @SuppressWarnings("unchecked")
 
-/** Tests the EventsWithinRangeComponent. */
+/** Tests the functions related to the filteredEvents display. */
 public class filteredEvents_Test {
   @Test
   public void eventInRange_test() {

@@ -7,7 +7,7 @@ import java.util.*;
 // supress warnings from converting the linked list of streams to an array
 @SuppressWarnings("unchecked")
 
-/** Tests the functions related to the AllEvents display. */
+/** Tests the functions related to the allEvents display. */
 public class allEvents_Test {
   @Test
   public void mergeStreams_test() {

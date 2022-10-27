@@ -1,3 +1,9 @@
+\\---------------- Commit #39 on 27/10/2022 ------------------------------------------------//
+Updated ControlPanel class by making use of the addComponent() function, and updating the
+GridBagLayout structure of its display.
+
+
+
 \\---------------- Commit #38 on 27/10/2022 ------------------------------------------------//
 Updated tests for the previous AllEventsComponent and EventsWithinRangeComponent classes.
 

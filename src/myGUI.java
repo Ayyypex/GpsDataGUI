@@ -27,7 +27,7 @@ public class myGUI extends JFrame {
     // mandatory configuration
     this.setTitle("a1765159's GUI");
     this.setBackground(Color.gray);
-    this.setSize(1160, 860);
+    this.setSize(1200, 900);
 
     // create main panel
     JPanel mainPanel = new JPanel(new GridBagLayout());
@@ -108,6 +108,8 @@ public class myGUI extends JFrame {
 
       // add separator below each row
       JSeparator rowSep = new JSeparator(SwingConstants.HORIZONTAL);
+      rowSep.setForeground(Color.lightGray);
+      rowSep.setBackground(Color.lightGray);
       addComponent( trackersTablePanel, rowSep, rowIndex+1, 0, 5, 1, minInsets );
       rowIndex += 2;     
     }
@@ -175,7 +177,7 @@ public class myGUI extends JFrame {
    * @param height      The number of rows the component will occupy.
    * @param insets      The spacing of the component's edges.
    */
-  private void addComponent(JPanel panel, Component component,
+  public static void addComponent(JPanel panel, Component component,
     int row, int col, int width, int height, Insets insets) 
   {
     GridBagConstraints c = new GridBagConstraints();

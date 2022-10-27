@@ -5,7 +5,7 @@ import swidgets.*;
 
 /** 
  * Control panel consisting of a latitude input field, latitude input field,
- * and a button.
+ * and a button to set the restrictions.
  */
 public class ControlPanel extends JPanel {
 
@@ -44,7 +44,7 @@ public class ControlPanel extends JPanel {
       return false;
     }
 
-    // return whether value is in range
+    // return whether coordinates are in range
     if ( type.equals("lat") ) {
       return (min >= -90.0 && min <= 90.0 && max >= -90.0 && max <= 90.0);
     }
@@ -60,8 +60,6 @@ public class ControlPanel extends JPanel {
     // configure main panel
     this.setLayout(new GridBagLayout());
     this.setBorder(BorderFactory.createEtchedBorder());
-    GridBagConstraints c = new GridBagConstraints();
-    c.insets = new Insets(5, 5, 5, 5);
     
     // loop() needs to be run in explicit Transaction
     Transaction.runVoid(() -> {
@@ -72,7 +70,7 @@ public class ControlPanel extends JPanel {
       // create CellLoop so the apply button also clears the text fields
       CellLoop<Boolean> cValidInput = new CellLoop<>();
 
-      // set up SButton that will only be clickable if business rule is met
+      // create SButton that will only be clickable if business rule is met
       SButton apply = new SButton("Set Restrictions", cValidInput);
       apply.setFocusable(false);
 
@@ -82,10 +80,10 @@ public class ControlPanel extends JPanel {
         sClicked = sTest;
       }
 
-      // set up stream that will fire an empty string upon the button click
+      // create stream that will fire an empty string upon the button click
       Stream<String> sClear = sClicked.map((Unit u) -> "");
 
-      // set up STextFields
+      // create STextFields
       latMin = new STextField(sClear, "");
       latMax = new STextField(sClear, "");
       lonMin = new STextField(sClear, "");
@@ -105,115 +103,70 @@ public class ControlPanel extends JPanel {
       cLonMax = sClicked.snapshot(lonMax.text, (Unit u, String lon2) -> lon2)
         .hold("180.0");
 
-      // set up Slabels to display the current restrictions
+      // create header labels
+      JLabel latHeader1 = new JLabel("Latitude", SwingConstants.RIGHT);
+      JLabel latHeader2 = new JLabel("Latitude", SwingConstants.RIGHT);
+      JLabel lonHeader1 = new JLabel("Longitude", SwingConstants.RIGHT);
+      JLabel lonHeader2 = new JLabel("Longitude", SwingConstants.RIGHT);
+      JLabel minHeader = new JLabel("Min: ");
+      JLabel maxHeader = new JLabel("Max: ");
+      JLabel currMinHeader = new JLabel("Current Min: ", SwingConstants.CENTER);
+      JLabel currMaxHeader = new JLabel("Current Max: ", SwingConstants.CENTER);
+
+      // create SLabels to display the current restrictions
       SLabel latMinLabel = new SLabel(cLatMin);
       SLabel latMaxLabel = new SLabel(cLatMax);
       SLabel lonMinLabel = new SLabel(cLonMin);
       SLabel lonMaxLabel = new SLabel(cLonMax);
 
-      // set up header labels
-      JLabel latHeader1 = new JLabel("Latitude");
-      JLabel latHeader2 = new JLabel("Latitude");
-      JLabel lonHeader1 = new JLabel("Longitude");
-      JLabel lonHeader2 = new JLabel("Longitude");
-      JLabel minHeader = new JLabel("Min: ");
-      JLabel maxHeader = new JLabel("Max: ");
-      JLabel currMinHeader = new JLabel("Current Min: ");
-      JLabel currMaxHeader = new JLabel("Current Max: ");
+      // configure SLabels
+      latMinLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      latMaxLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      lonMinLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      lonMaxLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      Font valueFont = new Font("Courier", Font.PLAIN, 14);
+      latMinLabel.setFont(valueFont);
+      latMaxLabel.setFont(valueFont);
+      lonMinLabel.setFont(valueFont);
+      lonMaxLabel.setFont(valueFont);
 
-      // configure spacing and add each element to subpanel
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=1;  // column
-      c.gridy=0;  // row
-      this.add(minHeader, c);
+      // define insets
+      Insets minInsets = new Insets(5, 5, 5, 5);
 
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=2;  
-      c.gridy=0;  
-      this.add(maxHeader, c);
+      // add components to control panel
+      myGUI.addComponent(this, minHeader, 0, 1, 1, 1, minInsets);
+      myGUI.addComponent(this, maxHeader, 0, 2, 1, 1, minInsets);
+      myGUI.addComponent(this, latHeader1, 1, 0, 1, 1, minInsets);
+      myGUI.addComponent(this, latMin, 1, 1, 1, 1, minInsets);
+      myGUI.addComponent(this, latMax, 1, 2, 1, 1, minInsets);
+      myGUI.addComponent(this, lonHeader1, 2, 0, 1, 1, minInsets);
+      myGUI.addComponent(this, lonMin, 2, 1, 1, 1, minInsets);
+      myGUI.addComponent(this, lonMax, 2, 2, 1, 1, minInsets);
+      myGUI.addComponent(this, apply, 3, 1, 2, 1, minInsets);
 
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=0;
-      c.gridy=1;
-      this.add(latHeader1, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=1;
-      c.gridy=1;
-      this.add(latMin, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=2;
-      c.gridy=1;
-      this.add(latMax, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=0;
-      c.gridy=2;
-      this.add(lonHeader1, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=1;
-      c.gridy=2;
-      this.add(lonMin, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=2;
-      c.gridy=2;
-      this.add(lonMax, c);
-      
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridwidth = 2;
-      c.gridx=1;
-      c.gridy=3;
-      this.add(apply, c);
-
+      // add separator
       JSeparator sep = new JSeparator(SwingConstants.HORIZONTAL);
       sep.setForeground(Color.black);
       sep.setBackground(Color.black);
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridy=4;
-      this.add(sep, c);
+      myGUI.addComponent(this, sep, 4, 0, 3, 1, minInsets);
 
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=1;  
-      c.gridy=5;  
-      this.add(currMinHeader, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=2;
-      c.gridy=5;
-      this.add(currMaxHeader, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=0;
-      c.gridy=6;
-      this.add(latHeader2, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=1;
-      c.gridy=6;
-      this.add(latMinLabel, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=2;
-      c.gridy=6;
-      this.add(latMaxLabel, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=0;
-      c.gridy=7;
-      this.add(lonHeader2, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=1;
-      c.gridy=7;
-      this.add(lonMinLabel, c);
-
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.gridx=2;
-      c.gridy=7;
-      this.add(lonMaxLabel, c);      
+      // add current restrictions
+      myGUI.addComponent(this, currMinHeader, 5, 1, 1, 1, minInsets);
+      myGUI.addComponent(this, currMaxHeader, 5, 2, 1, 1, minInsets);
+      sep = new JSeparator(SwingConstants.HORIZONTAL);
+      sep.setForeground(Color.lightGray);
+      sep.setBackground(Color.lightGray);
+      myGUI.addComponent(this, sep, 6, 0, 3, 1, minInsets);
+      myGUI.addComponent(this, latHeader2, 7, 0, 1, 1, minInsets);
+      myGUI.addComponent(this, latMinLabel, 7, 1, 1, 1, minInsets);
+      myGUI.addComponent(this, latMaxLabel, 7, 2, 1, 1, minInsets);
+      sep = new JSeparator(SwingConstants.HORIZONTAL);
+      sep.setForeground(Color.lightGray);
+      sep.setBackground(Color.lightGray);
+      myGUI.addComponent(this, sep, 8, 0, 3, 1, minInsets);
+      myGUI.addComponent(this, lonHeader2, 9, 0, 1, 1, minInsets);
+      myGUI.addComponent(this, lonMinLabel, 9, 1, 1, 1, minInsets);
+      myGUI.addComponent(this, lonMaxLabel, 9, 2, 1, 1, minInsets);  
     });
   }
 }

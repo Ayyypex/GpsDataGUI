@@ -1,3 +1,13 @@
+\\---------------- Commit #42 on 28/10/2022 ------------------------------------------------//
+Finished testing the distance travelled functionality. My tests check:
+    correct/accurate conversion from geodetic coordinates to ECEF coordinates
+    correct/accurate distance calculation between two gps events
+    0m travelled when there are not at least two distinct events
+    0m travelled when a list of 2 events have the same coordinates
+    correct/accurate distance calculation for a list of events
+    cell gets updated to the expected distance appropriately
+
+
 \\---------------- Commit #41 on 27/10/2022 ------------------------------------------------//
 Modularized code into the getSlidingWindow() function. Tested this function by:
     checking that it doesn't contain events outside of its time window

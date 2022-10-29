@@ -1,6 +1,6 @@
-import java.io.*;
-import java.util.*;
 import nz.sodium.*;
+import java.util.*;
+import java.io.*;
 
 // supress warnings from converting the linked list of streams to an array
 @SuppressWarnings("unchecked")

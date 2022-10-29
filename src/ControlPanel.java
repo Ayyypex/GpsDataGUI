@@ -1,7 +1,7 @@
-import javax.swing.*;
-import java.awt.*;
 import nz.sodium.*;
 import swidgets.*;
+import javax.swing.*;
+import java.awt.*;
 
 /** 
  * Control panel consisting of a latitude input field, latitude input field,

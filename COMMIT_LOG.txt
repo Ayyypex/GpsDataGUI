@@ -1,3 +1,8 @@
+\\---------------- Commit #43 on 29/10/2022 ------------------------------------------------//
+Finished formalizing the testing document and made some minor updates to some files.
+
+
+
 \\---------------- Commit #42 on 28/10/2022 ------------------------------------------------//
 Finished testing the distance travelled functionality. My tests check:
     correct/accurate conversion from geodetic coordinates to ECEF coordinates

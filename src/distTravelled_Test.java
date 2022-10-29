@@ -1,11 +1,8 @@
-import static org.junit.Assert.*;
 import org.junit.*;
+import static org.junit.Assert.*;
 import nz.sodium.*;
 import nz.sodium.time.*;
 import java.util.*;
-
-// supress warnings from converting the linked list of streams to an array
-@SuppressWarnings("unchecked")
 
 /** Tests the functions related to calculating the distance travelled. */
 public class distTravelled_Test {

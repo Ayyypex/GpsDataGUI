@@ -1,5 +1,5 @@
-import static org.junit.Assert.*;
 import org.junit.*;
+import static org.junit.Assert.*;
 import nz.sodium.*;
 import nz.sodium.time.*;
 import java.util.*;

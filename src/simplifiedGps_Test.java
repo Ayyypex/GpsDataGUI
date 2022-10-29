@@ -1,5 +1,5 @@
-import static org.junit.Assert.assertEquals;
 import org.junit.*;
+import static org.junit.Assert.assertEquals;
 import nz.sodium.*;
 
 /** Tests the functions related to the simplified tracker info. */
@@ -32,13 +32,8 @@ public class simplifiedGps_Test {
 
   @Test
   public void getSimplifiedGpsCells_test() {
-    // create stream sink that we will send an event to
     StreamSink<GpsEvent> sGpsEvents = new StreamSink<GpsEvent>();
-
-    // get the cells containing simplified tracker info
     Cell<String>[] simplifiedGpsCells = myGUI.getSimplifiedGpsCells(sGpsEvents);
-
-    // create events
     GpsEvent ev1 = new GpsEvent("Tracker0", 1.11, 2.22, 3.33);
     GpsEvent ev2 = new GpsEvent("Tracker1", 4.44, 5.55, 6.66);
 
@@ -48,7 +43,6 @@ public class simplifiedGps_Test {
     assertEquals( String.valueOf(ev1.latitude), simplifiedGpsCells[1].sample() );
     assertEquals( String.valueOf(ev1.longitude), simplifiedGpsCells[2].sample() );
 
-    // send and check that the cells update correctly 
     sGpsEvents.send(ev2);
     assertEquals( ev2.getTrackerNumber(), simplifiedGpsCells[0].sample() );
     assertEquals( String.valueOf(ev2.latitude), simplifiedGpsCells[1].sample() );

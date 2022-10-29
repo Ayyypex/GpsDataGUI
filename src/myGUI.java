@@ -1,8 +1,8 @@
-import javax.swing.*;
-import java.awt.*;
 import nz.sodium.*;
 import nz.sodium.time.*;
 import swidgets.*;
+import javax.swing.*;
+import java.awt.*;
 import java.util.*;
 
 // supress warnings from converting the linked list of streams to an array
@@ -325,12 +325,14 @@ public class myGUI extends JFrame {
   /**
    * Uses Sodium FRP operations on a GpsEvent stream to get a cell that holds the distance
    * travelled between events that are within the control panel's current latitude and
-   * longitude restrictions, and within the last 5 minutes
+   * longitude restrictions, and within the last 5 minutes.
    * 
    * @param sys         A Sodium FRP SecondsTimerSystem used to create a periodic timer.
    * @param ctrlPnl     The ControlPanel that sets and contains the current restrictions.
    * @param sGpsEvents  A stream of GpsEvents.
-   * @return            A cell that holds each event that is passed to the streams in String form.
+   * @return            A cell that holds the distance travelled between the GpsEvents
+   *                    that are both within the last 5 minutes and the control panel's
+   *                    latitude and longitude restrictions.
    */
   public static Cell<String> getDistTravelledCell(SecondsTimerSystem sys, ControlPanel ctrlPnl,
     Stream<GpsEvent> sGpsEvents)
@@ -396,7 +398,9 @@ public class myGUI extends JFrame {
    * @param ctrlPnl     The ControlPanel that sets and contains the current restrictions.
    * @param sGpsEvents  A stream of GpsEvents.
    * @param windowSize  The number of seconds to check events for. 
-   * @return
+   * @return            A Stream of ArrayList<GpsEvent> events containing only GpsEvents
+   *                    that are both within the last 5 minutes and the control panel's
+   *                    latitude and longitude restrictions.
    */
   public static Stream<ArrayList<GpsEvent>> getSlidingWindow(SecondsTimerSystem sys,
     ControlPanel ctrlPnl, Stream<GpsEvent> sGpsEvents, int windowSize)

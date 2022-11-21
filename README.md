@@ -17,5 +17,5 @@ $ mkdir bin
 /src$ javac -d ../bin -cp :../lib/*:../bin: *_Test.java
 
 # run specific test
-/src$ EDC-ass3/src$ java -cp :../lib/*:../bin: org.junit.runner.JUnitCore "TestName"
+/src$ java -cp :../lib/*:../bin: org.junit.runner.JUnitCore "TestName"
 ```

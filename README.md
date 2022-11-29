@@ -7,15 +7,17 @@ The program uses Sodium, an FRP library, and Java Swing to create a GUI that dis
 $ mkdir bin
 
 # compile and execute from src directory
-/src$ javac -d ../bin -cp :../lib/*:../bin: myGUI.java
-/src$ java -cp :../lib/*:../bin: myGUI
+cd src
+javac -d ../bin -cp :../lib/*:../bin: myGUI.java
+java -cp :../lib/*:../bin: myGUI
 ```
 
 ### Compiling and running the tests
 ```shell
 # compile all tests from src directory (after creating bin directory)
-/src$ javac -d ../bin -cp :../lib/*:../bin: *_Test.java
+cd src
+javac -d ../bin -cp :../lib/*:../bin: *_Test.java
 
 # run specific test
-/src$ java -cp :../lib/*:../bin: org.junit.runner.JUnitCore "TestName"
+java -cp :../lib/*:../bin: org.junit.runner.JUnitCore "TestName"
 ```
